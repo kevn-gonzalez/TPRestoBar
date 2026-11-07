@@ -7,8 +7,9 @@ namespace TPC_RestoBar_Equipo_X.Dominio
 {
     public class Mesa
     {
-        public int id { get; set; }
-        public int Numero { get; set; }
+        public int ID { get; set; }
+        public int NumeroMesa { get; set; }
         public int Capacidad { get; set; }
+        public string Estado { get; set; }
     }
 }

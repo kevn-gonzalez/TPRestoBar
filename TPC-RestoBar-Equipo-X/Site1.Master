@@ -1,0 +1,86 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site1.master.cs" Inherits="TPC_RestoBar_Equipo_X.Site1" %>
+
+<!DOCTYPE html>
+<html lang="es">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RestoBar Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-B/GM4XqrwHnWXNOWMbloTmrYXZg10cakYGmpfsR/bbzQ6JAJI4ihuyADKLnBgrCe" crossorigin="anonymous">
+    <script type="module" src="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-1a/pXj49ZQ1aHEmrJ+gMw1otqoVsYwlEnlD8mIfY2TV03r20Y0CN7uqx1tQogjPL" crossorigin="anonymous"></script>
+</head>
+
+<body class="bg-light d-flex flex-column min-vh-100">
+    <form id="form1" runat="server">
+
+        <nav class="navbar navbar-dark bg-dark shadow">
+            <div class="container-fluid px-4">
+                <!-- Botón que abre el menú  -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="drawer" data-bs-target="#menuLateral" aria-controls="menuLateral">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Título/Logo del RestoBar -->
+                <a class="navbar-brand fw-bold text-white ms-3" href="#">
+                    <i class="bi bi-egg-fried text-warning me-2"></i>RestoBar Equipo X
+        </a>
+
+                <!-- Contenedor Flotante Izquierdo -->
+                <dialog class="drawer drawer-start bg-dark text-white" id="menuLateral">
+                    <div class="drawer-header border-bottom border-secondary">
+                        <h5 class="drawer-title fw-bold text-white">
+                            <i class="bi bi-egg-fried text-warning me-2"></i>Menú RestoBar
+                </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="drawer" aria-label="Close"></button>
+                    </div>
+                    <div class="drawer-body">
+                        <ul class="nav flex-column space-y-2">
+                            <li class="nav-item">
+                                <a href="Insumos.aspx" class="nav-link text-white-50 icon-link icon-link-hover">
+                                    <i class="bi bi-sliders me-2"></i>Insumos (Gerente)
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="AsignacionMesa.aspx" class="nav-link text-white-50 icon-link icon-link-hover">
+                                    <i class="bi bi-calendar-check me-2"></i>Asignar Mesas
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <asp:HyperLink ID="lnkMesero" runat="server" NavigateUrl="~/PanelMesero.aspx" CssClass="nav-link text-white-50 icon-link icon-link-hover">
+                            <i class="bi bi-shop me-2"></i>Mis Mesas (Mesero)
+                        </asp:HyperLink>
+                            </li>
+                            <li class="nav-item">
+                                <asp:HyperLink ID="lnkReportes" runat="server" NavigateUrl="~/Reportes.aspx" CssClass="nav-link text-white-50 icon-link icon-link-hover">
+                            <i class="bi bi-bar-chart-line me-2"></i>Reportes
+                        </asp:HyperLink>
+                            </li>
+                            <hr class="border-secondary my-2" />
+                            <li class="nav-item mt-auto">
+                                <asp:HyperLink ID="lnkLogin" runat="server" NavigateUrl="~/Login.aspx" CssClass="btn btn-outline-info btn-sm w-100 text-white">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Ingresar (Login)
+                        </asp:HyperLink>
+                            </li>
+                        </ul>
+                    </div>
+                </dialog>
+            </div>
+        </nav>
+
+        <main class="container my-4 flex-grow-1">
+            <div class="card shadow-sm border-0 p-4 bg-white">
+                <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
+        </main>
+
+        <footer class="bg-dark text-center py-3 mt-auto border-top border-secondary">
+            <div class="container">
+                <small class="text-white-50">&copy; <%: DateTime.Now.Year %> - TPC RestoBar - UTN FRGP</small>
+            </div>
+        </footer>
+
+    </form>
+
+</body>
+</html>
