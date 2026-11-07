@@ -11,6 +11,6 @@ namespace TPC_RestoBar_Equipo_X.Dominio
         public string Username { get; set; }
         public string Password { get; set; } 
         public string Nombre { get; set; }
-        public Perfil PerfilUsuario { get; set; }
+        public string TipoPerfil { get; set; }
     }
 }
