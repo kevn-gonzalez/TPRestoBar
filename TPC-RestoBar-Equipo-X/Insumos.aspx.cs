@@ -11,7 +11,11 @@ namespace TPC_RestoBar_Equipo_X
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+            if (!Seguridad.EsAdmin())
+            {
+                Response.Redirect("~/AsignacionMesa.aspx");
+                return;
+            }
         }
 
         protected void btnGuardar_Click(object sender, EventArgs e)
