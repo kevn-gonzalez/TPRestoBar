@@ -30,8 +30,8 @@ namespace TPC_RestoBar_Equipo_X.AccesoDatos
             using (SqlConnection conexion = ObtenerConexion())
             {
                 string consulta = @"
-                    SELECT Id, Numero, Capacidad
-                    FROM Mesas
+                    SELECT Id, NumeroMesa, Capacidad
+                    FROM Mesa
                     ORDER BY Numero";
 
                 using (SqlDataAdapter adaptador =

@@ -19,7 +19,7 @@ namespace TPC_RestoBar_Equipo_X
                 string cadenaConexion = "server=.\\SQLEXPRESS; database=RestoBar_P3_DB; integrated security=true; TrustServerCertificate=True;";
 
                 SqlConnection conexion = new SqlConnection(cadenaConexion);
-                SqlCommand comando = new SqlCommand("SELECT Id, Numero, Capacidad FROM Mesas", conexion);
+                SqlCommand comando = new SqlCommand("SELECT ID, NumeroMesa, Capacidad FROM Mesas", conexion);
 
                 try
                 {

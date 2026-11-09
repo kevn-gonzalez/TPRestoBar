@@ -27,7 +27,7 @@ namespace TPC_RestoBar_Equipo_X
 
             using (SqlConnection conexion = datos.ObtenerConexion())
             {
-                string consulta = @"SELECT ID, Username, Nombre, Perfil
+                string consulta = @"SELECT ID, Username, Nombre, TipoPerfil
                                     FROM Usuarios
                                     WHERE Username = @usuario
                                     AND Password = @password";
@@ -48,8 +48,16 @@ namespace TPC_RestoBar_Equipo_X
                     usuarioLogueado.Username = lector["Username"].ToString();
                     usuarioLogueado.Nombre = lector["Nombre"].ToString();
 
-                    usuarioLogueado.TipoUsuario =
-                        (Dominio.TipoUsuario)Convert.ToInt32(lector["Perfil"]);
+                    string perfil = lector["TipoPerfil"].ToString();
+
+                    if (perfil == "Admin")
+                    {
+                        usuarioLogueado.TipoUsuario = TipoUsuario.ADMIN;
+                    }
+                    else
+                    {
+                        usuarioLogueado.TipoUsuario = TipoUsuario.USUARIO;
+                    }
 
                     Session["usuario"] = usuarioLogueado;
 
