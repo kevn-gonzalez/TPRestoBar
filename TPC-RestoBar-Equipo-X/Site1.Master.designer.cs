@@ -33,31 +33,49 @@ namespace TPC_RestoBar_Equipo_X
         protected global::System.Web.UI.WebControls.Button btnSalir;
 
         /// <summary>
-        /// Control lnkMesero.
+        /// Control btnNavInsumos.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkMesero;
+        protected global::System.Web.UI.WebControls.LinkButton btnNavInsumos;
 
         /// <summary>
-        /// Control lnkReportes.
+        /// Control btnNavAsignacion.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkReportes;
+        protected global::System.Web.UI.WebControls.LinkButton btnNavAsignacion;
 
         /// <summary>
-        /// Control lnkLogin.
+        /// Control btnNavMesero.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkLogin;
+        protected global::System.Web.UI.WebControls.LinkButton btnNavMesero;
+
+        /// <summary>
+        /// Control btnNavReportes.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnNavReportes;
+
+        /// <summary>
+        /// Control btnNavLogin.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnNavLogin;
 
         /// <summary>
         /// Control MainContent.

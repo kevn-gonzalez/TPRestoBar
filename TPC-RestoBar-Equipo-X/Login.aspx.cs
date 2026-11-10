@@ -23,50 +23,29 @@ namespace TPC_RestoBar_Equipo_X
                 return;
             }
 
+            Insumos nuevo = null;
             AccesoADatos datos = new AccesoADatos();
 
-            using (SqlConnection conexion = datos.ObtenerConexion())
+            try
             {
-                string consulta = @"SELECT ID, Username, Nombre, TipoPerfil
-                                    FROM Usuarios
-                                    WHERE Username = @usuario
-                                    AND Password = @password";
+                datos.setearConsulta("SELECT ID, Username, Nombre, TipoPerfil FROM Usuarios WHERE Username = @usuario AND Password = @password");
 
-                SqlCommand comando = new SqlCommand(consulta, conexion);
+                datos.setearParametro("@usuario", usuario);
+                datos.setearParametro("@password", password);
 
-                comando.Parameters.Add("@usuario", SqlDbType.VarChar, 50).Value = usuario;
-                comando.Parameters.Add("@password", SqlDbType.VarChar, 50).Value = password;
+                datos.ejecutarLectura();
 
-                conexion.Open();
-
-                SqlDataReader lector = comando.ExecuteReader();
-
-                if (lector.Read())
+                if (datos.Lector.Read())
                 {
-                    Usuario usuarioLogueado = new Usuario();
-                    usuarioLogueado.ID = Convert.ToInt32(lector["ID"]);
-                    usuarioLogueado.Username = lector["Username"].ToString();
-                    usuarioLogueado.Nombre = lector["Nombre"].ToString();
-
-                    string perfil = lector["TipoPerfil"].ToString();
-
-                    if (perfil == "Admin")
-                    {
-                        usuarioLogueado.TipoUsuario = TipoUsuario.ADMIN;
-                    }
-                    else
-                    {
-                        usuarioLogueado.TipoUsuario = TipoUsuario.USUARIO;
-                    }
-
-                    Session["usuario"] = usuarioLogueado;
-
-                    Response.Redirect("~/AsignacionMesa.aspx");
                 }
-                else
-                {
-                    lblMensaje.Text = "Usuario o contraseña incorrectos.";
-                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
             }
         }
     }

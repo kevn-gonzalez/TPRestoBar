@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Web.UI.WebControls;
 
 namespace TPC_RestoBar_Equipo_X
 {
@@ -13,6 +14,15 @@ namespace TPC_RestoBar_Equipo_X
         {
             Session.Clear();
             Response.Redirect("~/Login.aspx");
+        }
+
+        protected void btnNav_Click(object sender, EventArgs e)
+        {
+            LinkButton botonClickeado = (LinkButton)sender;
+
+            string paginaDestino = botonClickeado.CommandArgument;
+
+            Response.Redirect(paginaDestino);
         }
     }
 }

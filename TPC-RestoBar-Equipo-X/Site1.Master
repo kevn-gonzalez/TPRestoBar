@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="es">
-<head runat="server" >
+<head runat="server">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RestoBar Admin</title>
@@ -17,53 +17,53 @@
         <nav class="navbar navbar-dark bg-dark shadow">
             <div class="container-fluid px-4">
                 <asp:Button ID="btnSalir" runat="server"
-                     Text="Cerrar sesión"
-                     CssClass="btn btn-outline-danger"
-                     OnClick="btnSalir_Click" />
+                    Text="Cerrar sesión"
+                    CssClass="btn btn-outline-danger"
+                    OnClick="btnSalir_Click" />
                 <button class="navbar-toggler" type="button" data-bs-toggle="drawer" data-bs-target="#menuLateral" aria-controls="menuLateral">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-             
+
                 <a class="navbar-brand fw-bold text-white ms-3" href="#">
                     <i class="bi bi-egg-fried text-warning me-2"></i>RestoBar Equipo X
-        </a>
+                </a>
 
 
                 <dialog class="drawer drawer-start bg-dark text-white" id="menuLateral">
                     <div class="drawer-header border-bottom border-secondary">
                         <h5 class="drawer-title fw-bold text-white">
                             <i class="bi bi-egg-fried text-warning me-2"></i>Menú RestoBar
-                </h5>
+        </h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="drawer" aria-label="Close"></button>
                     </div>
                     <div class="drawer-body">
-                        <ul class="nav flex-column space-y-2">
+                        <ul class="nav flex-column space-y-2 w-100">
                             <li class="nav-item">
-                                <a href="Insumos.aspx" class="nav-link text-white-50 icon-link icon-link-hover">
-                                    <i class="bi bi-sliders me-2"></i>Insumos (Gerente)
-                                </a>
+                                <asp:LinkButton ID="btnNavInsumos" runat="server" OnClick="btnNav_Click" CommandArgument="Insumos.aspx" CssClass="nav-link text-white-50 icon-link icon-link-hover w-100">
+            <i class="bi bi-sliders me-2"></i>Insumos (Gerente)
+        </asp:LinkButton>
                             </li>
                             <li class="nav-item">
-                                <a href="AsignacionMesa.aspx" class="nav-link text-white-50 icon-link icon-link-hover">
-                                    <i class="bi bi-calendar-check me-2"></i>Asignar Mesas
-                                </a>
+                                <asp:LinkButton ID="btnNavAsignacion" runat="server" OnClick="btnNav_Click" CommandArgument="AsignacionMesa.aspx" CssClass="nav-link text-white-50 icon-link icon-link-hover w-100">
+            <i class="bi bi-calendar-check me-2"></i>Asignar Mesas
+        </asp:LinkButton>
                             </li>
                             <li class="nav-item">
-                                <asp:HyperLink ID="lnkMesero" runat="server" NavigateUrl="~/PanelMesero.aspx" CssClass="nav-link text-white-50 icon-link icon-link-hover">
-                            <i class="bi bi-shop me-2"></i>Mis Mesas (Mesero)
-                        </asp:HyperLink>
+                                <asp:LinkButton ID="btnNavMesero" runat="server" OnClick="btnNav_Click" CommandArgument="PanelMesero.aspx" CssClass="nav-link text-white-50 icon-link icon-link-hover w-100">
+            <i class="bi bi-shop me-2"></i>Mis Mesas (Mesero)
+        </asp:LinkButton>
                             </li>
                             <li class="nav-item">
-                                <asp:HyperLink ID="lnkReportes" runat="server" NavigateUrl="~/Reportes.aspx" CssClass="nav-link text-white-50 icon-link icon-link-hover">
-                            <i class="bi bi-bar-chart-line me-2"></i>Reportes
-                        </asp:HyperLink>
+                                <asp:LinkButton ID="btnNavReportes" runat="server" OnClick="btnNav_Click" CommandArgument="Reportes.aspx" CssClass="nav-link text-white-50 icon-link icon-link-hover w-100">
+            <i class="bi bi-bar-chart-line me-2"></i>Reportes
+        </asp:LinkButton>
                             </li>
                             <hr class="border-secondary my-2" />
                             <li class="nav-item mt-auto">
-                                <asp:HyperLink ID="lnkLogin" runat="server" NavigateUrl="~/Login.aspx" CssClass="btn btn-outline-info btn-sm w-100 text-white">
-                            <i class="bi bi-box-arrow-in-right me-2"></i>Ingresar (Login)
-                        </asp:HyperLink>
+                                <asp:LinkButton ID="btnNavLogin" runat="server" OnClick="btnNav_Click" CommandArgument="Login.aspx" CssClass="btn btn-outline-info btn-sm w-100 text-white">
+            <i class="bi bi-box-arrow-in-right me-2"></i>Ingresar (Login)
+        </asp:LinkButton>
                             </li>
                         </ul>
                     </div>
