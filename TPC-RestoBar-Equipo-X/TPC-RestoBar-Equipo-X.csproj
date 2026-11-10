@@ -86,7 +86,9 @@
     <Compile Include="AsignacionMesa.aspx.designer.cs">
       <DependentUpon>AsignacionMesa.aspx</DependentUpon>
     </Compile>
+    <Compile Include="DatosNegocio\AsignacionMesaNegocio.cs" />
     <Compile Include="DatosNegocio\InsumosNegocio.cs" />
+    <Compile Include="DatosNegocio\PanelMeseroNegocio.cs" />
     <Compile Include="Dominio\Consumicion.cs" />
     <Compile Include="Dominio\Mesa.cs" />
     <Compile Include="Dominio\Pedido.cs" />

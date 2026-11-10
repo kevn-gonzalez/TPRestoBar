@@ -1,4 +1,81 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="PanelMesero.aspx.cs" Inherits="TPC_RestoBar_Equipo_X.PanelMesero" %>
+﻿
+<%@ Page Title="Mis Mesas" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="PanelMesero.aspx.cs" Inherits="TPC_RestoBar_Equipo_X.PanelMesero" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+
+    <div class="container-fluid">
+
+        <h2 class="fw-bold mb-3">Mis Mesas Asignadas</h2>
+
+        <p class="text-muted">
+            Consultá las mesas y pedidos asignados a cada mesero.
+        </p>
+
+        <div class="mb-4">
+            <label class="form-label">Seleccionar mesero:</label>
+
+            <asp:DropDownList ID="ddlMeseros"
+                runat="server"
+                CssClass="form-select"
+                AutoPostBack="true"
+                OnSelectedIndexChanged="ddlMeseros_SelectedIndexChanged">
+            </asp:DropDownList>
+        </div>
+
+        <asp:Label ID="lblMensaje"
+            runat="server"
+            CssClass="d-block mb-3 text-danger" />
+
+        <asp:Label ID="lblSinPedidos"
+            runat="server"
+            Visible="false"
+            Text="Este mesero no tiene pedidos abiertos."
+            CssClass="d-block mb-3" />
+
+        <div class="row g-3">
+
+            <asp:Repeater ID="rptPedidos" runat="server">
+                <ItemTemplate>
+
+                    <div class="col-12 col-md-4">
+
+                        <div class="card shadow-sm p-3">
+
+                            <h5 class="fw-bold">
+                                Mesa <%#: Eval("Mesa.NumeroMesa") %>
+                            </h5>
+
+                            <p>
+                                Pedido #<%#: Eval("ID") %>
+                            </p>
+
+                            <p>
+                                Capacidad: <%#: Eval("Mesa.Capacidad") %>
+                            </p>
+
+                            <p>
+                                Estado: <%#: Eval("Estado") %>
+                            </p>
+
+                            <p class="small text-muted">
+                                Apertura:
+                                <%#: Eval("FechaApertura", "{0:dd/MM/yyyy HH:mm}") %>
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </ItemTemplate>
+            </asp:Repeater>
+
+        </div>
+
+    </div>
+
+</asp:Content>
+
+<%--<%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="PanelMesero.aspx.cs" Inherits="TPC_RestoBar_Equipo_X.PanelMesero" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
         <div class="container-fluid">
         <!-- Encabezado -->
@@ -44,4 +121,4 @@
 
         </div>
     </div>
-</asp:Content>
+</asp:Content>--%>

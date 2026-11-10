@@ -19,7 +19,79 @@
     </div>
 
 <!-- MAPA DE MESAS  -->
-   
+
+<div class="row g-3 mb-4">
+
+    <asp:Repeater ID="rptMesas" runat="server">
+        <ItemTemplate>
+
+            <div class="col-6 col-md-3">
+                <div class="card shadow-sm text-center p-3">
+
+                    <i class="bi bi-egg-fried text-primary fs-3"></i>
+
+                    <h6 class="fw-bold mt-2">
+                        Mesa <%#: Eval("NumeroMesa") %>
+                    </h6>
+
+                    <p class="text-secondary small">
+                        Capacidad: <%#: Eval("Capacidad") %>
+                    </p>
+
+                    <span class="badge bg-secondary">
+                        <%#: Eval("Estado") %>
+                    </span>
+
+                    <asp:LinkButton
+                        ID="btnSeleccionar" runat="server" Text="Seleccionar" CssClass="btn btn-primary btn-sm mt-2"
+                        CommandArgument = '<%# Eval("ID") %>' CommandName='<%# Eval("NumeroMesa") %>' 
+                        Enabled='<%# Eval("Estado").ToString() == "Libre" %>' OnCommand="btnSeleccionar_Command" />
+
+
+
+                </div>
+            </div>
+
+        </ItemTemplate>
+    </asp:Repeater>
+
+    </div>
+    
+    <asp:Panel ID="pnlAsignacion" runat="server"
+     Visible="false" CssClass="card p-4 mt-3">
+
+        <asp:HiddenField ID="hfMesaId" runat="server" />
+
+        <h5>Asignar mesa</h5>
+
+        <asp:Label ID="lblMesaElegida"
+         runat="server" CssClass="d-block mb-3" />
+
+        <label class="form-label">Seleccionar mesero:</label>
+
+        <asp:DropDownList ID="ddlMeseros"
+        runat="server" CssClass="form-select">
+        </asp:DropDownList>
+
+        
+        <asp:Button ID="btnGuardar"
+        runat="server"
+        Text="Confirmar asignación"
+        CssClass="btn btn-success mt-3"
+        OnClick="btnGuardar_Click" />
+
+
+    </asp:Panel>
+
+    <asp:Label ID="lblMensaje"
+    runat="server"
+    CssClass="d-block mt-3 fw-bold" />
+
+</asp:Content>
+
+
+  <%-- 
+    <div class="vstack gap-4 mb-5 mx-auto" style="max-width: 600px;">
     <div class="vstack gap-4 mb-5 mx-auto" style="max-width: 600px;">
         
         <!-- ================= FILA 1 (Mesas 1 a 4) ================= -->
@@ -236,6 +308,5 @@
                 </div>
             </div>
         </div>
-    </dialog>
+    </dialog>--%>
 
-</asp:Content>
