@@ -54,7 +54,14 @@
 
         </ItemTemplate>
     </asp:Repeater>
+    </div>
 
+    <div class="row">
+        <div class="col-3">
+             <asp:TextBox CssClass="form-control" ID="numero" runat="server" />
+             <asp:TextBox CssClass="form-control" ID="capacidad" runat="server" />
+             <asp:Button ID="btnAgregarMesa" OnClick="btnAgregarMesa_Click" CssClass="btn btn-primary" Text="Agregar" runat="server" />
+        </div>
     </div>
     
     <asp:Panel ID="pnlAsignacion" runat="server"

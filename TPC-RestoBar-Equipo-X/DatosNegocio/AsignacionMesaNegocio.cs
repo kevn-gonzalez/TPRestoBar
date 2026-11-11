@@ -6,42 +6,11 @@ using TPC_RestoBar_Equipo_X.Dominio;
 using TPC_RestoBar_Equipo_X.AccesoDatos;
 using System.Security.AccessControl;
 
+
 namespace TPC_RestoBar_Equipo_X.DatosNegocio
 {
     public class AsignacionMesaNegocio
     {
-        public List<Mesa> listar()
-        {
-            List<Mesa> lista = new List<Mesa>();
-            AccesoADatos datos = new AccesoADatos();
-
-            try
-            {
-                datos.setearConsulta(
-                    "SELECT ID, NumeroMesa, Capacidad, Estado FROM Mesa ORDER BY NumeroMesa");
-
-                datos.ejecutarLectura();
-
-                while (datos.Lector.Read())
-                {
-                    Mesa aux = new Mesa();
-
-                    aux.ID = (int)datos.Lector["ID"];
-                    aux.NumeroMesa = (int)datos.Lector["NumeroMesa"];
-                    aux.Capacidad = (int)datos.Lector["Capacidad"];
-                    aux.Estado = (string)datos.Lector["Estado"];
-
-                    lista.Add(aux);
-                }
-
-                return lista;
-            }
-            finally
-            {
-                datos.cerrarConexion();
-            }
-        }
-
         public List<Usuario> listarMeseros()
         {
             List<Usuario> lista = new List<Usuario>();

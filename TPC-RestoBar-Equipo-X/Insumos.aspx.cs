@@ -62,6 +62,7 @@ namespace TPC_RestoBar_Equipo_X
                
                 limpiarFormulario();
                 cargarGrilla();
+                Response.Redirect("Insumos.aspx");
             }
             catch (Exception ex)
             {

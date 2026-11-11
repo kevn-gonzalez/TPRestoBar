@@ -24,6 +24,33 @@ namespace TPC_RestoBar_Equipo_X
         protected global::System.Web.UI.WebControls.Repeater rptMesas;
 
         /// <summary>
+        /// Control numero.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox numero;
+
+        /// <summary>
+        /// Control capacidad.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox capacidad;
+
+        /// <summary>
+        /// Control btnAgregarMesa.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnAgregarMesa;
+
+        /// <summary>
         /// Control pnlAsignacion.
         /// </summary>
         /// <remarks>

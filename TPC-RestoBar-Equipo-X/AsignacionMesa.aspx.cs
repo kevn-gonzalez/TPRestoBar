@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using TPC_RestoBar_Equipo_X.DatosNegocio;
+using TPC_RestoBar_Equipo_X.Dominio;
 
 namespace TPC_RestoBar_Equipo_X
 {
@@ -20,12 +21,13 @@ namespace TPC_RestoBar_Equipo_X
               }*/
             if (!IsPostBack)
             {
-                AsignacionMesaNegocio negocio = new AsignacionMesaNegocio();
+                AsignacionMesaNegocio asignacionMesaNegocio = new AsignacionMesaNegocio();
+                MesaNegocio mesaNegocio = new MesaNegocio();
 
-                rptMesas.DataSource = negocio.listar();
+                rptMesas.DataSource = mesaNegocio.listar();
                 rptMesas.DataBind();
 
-                ddlMeseros.DataSource = negocio.listarMeseros();
+                ddlMeseros.DataSource = asignacionMesaNegocio.listarMeseros();
                 ddlMeseros.DataTextField = "Nombre";
                 ddlMeseros.DataValueField = "ID";
                 ddlMeseros.DataBind();
@@ -61,6 +63,7 @@ namespace TPC_RestoBar_Equipo_X
                 try
                 {
                     AsignacionMesaNegocio negocio = new AsignacionMesaNegocio();
+                    MesaNegocio mesaNegocio = new MesaNegocio();
 
                     bool resultado = negocio.asignarMesa(idMesa, idMesero);
 
@@ -75,7 +78,7 @@ namespace TPC_RestoBar_Equipo_X
                         pnlAsignacion.Visible = false;
                     }
 
-                    rptMesas.DataSource = negocio.listar();
+                    rptMesas.DataSource = mesaNegocio.listar();
                     rptMesas.DataBind();
                 }
                 catch (Exception)
@@ -84,6 +87,19 @@ namespace TPC_RestoBar_Equipo_X
                     pnlAsignacion.Visible = true;
                 }
             }
+        }
+
+        protected void btnAgregarMesa_Click(object sender, EventArgs e)
+        {
+            MesaNegocio negocio = new MesaNegocio();
+            Mesa nuevo = new Mesa();
+            int numeroMesa = int.Parse(numero.Text);
+            int numeroCapacidad = int.Parse(capacidad.Text);
+            nuevo.NumeroMesa = numeroMesa;
+            nuevo.Capacidad = numeroCapacidad;
+            negocio.agregar(nuevo);
+            Response.Redirect("AsignacionMesa.aspx");
+
         }
     }
 }
