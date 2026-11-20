@@ -32,6 +32,7 @@ namespace TPC_RestoBar_Equipo_X
 
             lblMensaje.Text = "";
             lblSinPedidos.Visible = false;
+            pnlPedido.Visible = false;
 
             if (!int.TryParse(ddlMeseros.SelectedValue, out idMesero))
             {
@@ -56,5 +57,76 @@ namespace TPC_RestoBar_Equipo_X
                 lblMensaje.Text = "Error al cargar los pedidos.";
             }
         }
+
+        protected void btnGestionar_Command(object sender, CommandEventArgs e)
+        {
+            int idPedido;
+            int idMesero;
+
+            if (!int.TryParse(e.CommandArgument.ToString(), out idPedido) ||
+                !int.TryParse(ddlMeseros.SelectedValue, out idMesero))
+            {
+                lblMensaje.Text = "Seleccioná un pedido válido.";
+                return;
+            }
+
+            try
+            {
+                PanelMeseroNegocio negocio = new PanelMeseroNegocio();
+
+                bool pertenece = negocio.listarPedidos(idMesero)
+                    .Exists(p => p.ID == idPedido);
+
+                if (!pertenece)
+                {
+                    lblMensaje.Text = "El pedido no corresponde al mesero seleccionado.";
+                    pnlPedido.Visible = false;
+                    return;
+                }
+
+                hfPedidoId.Value = idPedido.ToString();
+
+                lblPedidoElegido.Text = "Pedido #" + idPedido;
+
+                gvConsumiciones.DataSource = negocio.listarConsumiciones();
+                gvConsumiciones.DataBind();
+
+                pnlPedido.Visible = true;
+                IrAlDetalle();
+                lblMensaje.Text = "";
+            }
+            catch (Exception)
+            {
+                lblMensaje.Text = "Error al cargar las consumiciones.";
+            }
+        }
+
+        protected void btnElegirConsumicion_Command(object sender, CommandEventArgs e)
+        {
+            hfConsumicionId.Value = e.CommandArgument.ToString();
+
+            lblConsumicionElegida.Text = "Producto: " + e.CommandName;
+
+            txtCantidad.Text = "1";
+
+            pnlAgregar.Visible = true;
+            pnlPedido.Visible = true;
+            IrAlDetalle();
+        }
+
+        private void IrAlDetalle()
+        {
+            ClientScript.RegisterStartupScript(
+                GetType(),
+                "irDetalle",
+                "window.addEventListener('load', function() {" +
+                "document.getElementById('zonaGestion').scrollIntoView(" +
+                "{ behavior: 'smooth', block: 'start' });" +
+                "});",
+                true
+            );
+        }
+
+
     }
 }

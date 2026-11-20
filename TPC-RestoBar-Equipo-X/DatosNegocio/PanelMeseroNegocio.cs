@@ -49,5 +49,39 @@ namespace TPC_RestoBar_Equipo_X.DatosNegocio
                 datos.cerrarConexion();
             }
         }
+
+        public List<Consumicion> listarConsumiciones()
+        {
+            List<Consumicion> lista = new List<Consumicion>();
+            AccesoADatos datos = new AccesoADatos();
+
+            try
+            {
+                datos.setearConsulta(
+                "SELECT ID, Nombre, Tipo, Precio, StockActual FROM Consumiciones WHERE StockActual > 0 ORDER BY Nombre");
+
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    Consumicion aux = new Consumicion();
+
+                    aux.ID = (int)datos.Lector["ID"];
+                    aux.Nombre = (string)datos.Lector["Nombre"];
+                    aux.Tipo = (string)datos.Lector["Tipo"];
+                    aux.Precio = (decimal)datos.Lector["Precio"];
+                    aux.StockActual = (int)datos.Lector["StockActual"];
+
+                    lista.Add(aux);
+                }
+
+                return lista;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
     }
 }

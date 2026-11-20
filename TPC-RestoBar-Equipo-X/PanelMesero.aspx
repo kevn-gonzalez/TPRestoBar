@@ -3,18 +3,26 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-    <div class="container-fluid">
+    <div class="resto-panel">
 
-        <h2 class="fw-bold mb-3">Mis Mesas Asignadas</h2>
+        
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+            <div>
+                <h2 class="fw-bold mb-1">Mis Mesas Asignadas</h2>
+                <p class="text-muted mb-0">
+                    Consultá y gestioná los pedidos de cada mesero.
+                </p>
+            </div>
 
-        <p class="text-muted">
-            Consultá las mesas y pedidos asignados a cada mesero.
-        </p>
+            <span class="etiqueta-panel">Gestión de pedidos</span>
+        </div>
 
-        <div class="mb-4">
-            <label class="form-label">Seleccionar mesero:</label>
 
-            <asp:DropDownList ID="ddlMeseros"
+        <div class="selector-panel mb-4">
+            <label class="form-label fw-bold">Seleccionar mesero</label>
+
+            <asp:DropDownList
+                ID="ddlMeseros"
                 runat="server"
                 CssClass="form-select"
                 AutoPostBack="true"
@@ -30,37 +38,56 @@
             runat="server"
             Visible="false"
             Text="Este mesero no tiene pedidos abiertos."
-            CssClass="d-block mb-3" />
+            CssClass="d-block mb-3 text-muted" />
+
+        <div class="row g-4">
+
+
+    <div class="col-12 col-lg-7">
+
+        <h4 class="fw-bold mb-3">Pedidos abiertos</h4>
 
         <div class="row g-3">
 
             <asp:Repeater ID="rptPedidos" runat="server">
                 <ItemTemplate>
 
-                    <div class="col-12 col-md-4">
+                    <div class="col-12">
 
-                        <div class="card shadow-sm p-3">
+                        <div class="mesa-card h-100">
 
-                            <h5 class="fw-bold">
-                                Mesa <%#: Eval("Mesa.NumeroMesa") %>
-                            </h5>
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <h5 class="fw-bold mb-1">
+                                        Mesa <%#: Eval("Mesa.NumeroMesa") %>
+                                    </h5>
 
-                            <p>
-                                Pedido #<%#: Eval("ID") %>
-                            </p>
+                                    <p class="mb-1">
+                                        Pedido #<%#: Eval("ID") %>
+                                    </p>
 
-                            <p>
-                                Capacidad: <%#: Eval("Mesa.Capacidad") %>
-                            </p>
+                                    <p class="text-muted small mb-1">
+                                        Capacidad: <%#: Eval("Mesa.Capacidad") %> personas
+                                    </p>
 
-                            <p>
-                                Estado: <%#: Eval("Estado") %>
-                            </p>
+                                    <p class="text-muted small mb-0">
+                                        Apertura:
+                                        <%#: Eval("FechaApertura", "{0:dd/MM/yyyy HH:mm}") %>
+                                    </p>
+                                </div>
 
-                            <p class="small text-muted">
-                                Apertura:
-                                <%#: Eval("FechaApertura", "{0:dd/MM/yyyy HH:mm}") %>
-                            </p>
+                                <span class="estado-abierto">Abierto</span>
+                            </div>
+
+                            <div class="text-end mt-3">
+                                <asp:LinkButton
+                                    ID="btnGestionar"
+                                    runat="server"
+                                    Text="Gestionar pedido"
+                                    CssClass="btn-gestionar"
+                                    CommandArgument='<%# Eval("ID") %>'
+                                    OnCommand="btnGestionar_Command" />
+                            </div>
 
                         </div>
 
@@ -70,10 +97,213 @@
             </asp:Repeater>
 
         </div>
+    </div>
+
+
+    <div class="col-12 col-lg-5">
+
+        <div id="zonaGestion">
+
+            <asp:Panel ID="Panel1"
+                runat="server"
+                Visible="false"
+                CssClass="pedido-detalle">
+
+                <asp:HiddenField ID="HiddenField1" runat="server" />
+
+                <div class="mb-4">
+                    <h3 class="fw-bold mb-2">Gestionar pedido</h3>
+
+                    <asp:Label ID="Label1"
+                        runat="server"
+                        CssClass="text-muted" />
+                </div>
+
+                <h5 class="fw-bold mb-3">Comidas y bebidas disponibles</h5>
+
+                <div class="table-responsive">
+
+                    <asp:GridView ID="GridView1"
+                        runat="server"
+                        AutoGenerateColumns="false"
+                        GridLines="None"
+                        CssClass="table table-hover align-middle">
+
+                        <Columns>
+
+                            <asp:BoundField DataField="Nombre"
+                                HeaderText="Producto" />
+
+                            <asp:BoundField DataField="Tipo"
+                                HeaderText="Tipo" />
+
+                            <asp:BoundField DataField="Precio"
+                                HeaderText="Precio"
+                                DataFormatString="{0:N2}" />
+
+                            <asp:BoundField DataField="StockActual"
+                                HeaderText="Stock" />
+
+                            <asp:TemplateField HeaderText="Acción">
+                                <ItemTemplate>
+                                    <asp:LinkButton
+                                        ID="btnElegirConsumicion"
+                                        runat="server"
+                                        Text="Seleccionar"
+                                        CssClass="btn btn-primary btn-sm"
+                                        CommandArgument='<%# Eval("ID") %>'
+                                        CommandName='<%# Eval("Nombre") %>'
+                                        OnCommand="btnElegirConsumicion_Command" />
+                                </ItemTemplate>
+                            </asp:TemplateField>
+
+                        </Columns>
+
+                    </asp:GridView>
+
+                </div>
+
+                <asp:Panel ID="Panel2"
+                    runat="server"
+                    Visible="false"
+                    CssClass="producto-seleccionado mt-4">
+
+                    <asp:HiddenField ID="HiddenField2"
+                        runat="server" />
+
+                    <h5 class="fw-bold mb-3">Producto seleccionado</h5>
+
+                    <asp:Label ID="Label2"
+                        runat="server"
+                        CssClass="d-block mb-3 fw-bold" />
+
+                    <label class="form-label">Cantidad:</label>
+
+                    <asp:TextBox ID="TextBox1"
+                        runat="server"
+                        TextMode="Number"
+                        Text="1"
+                        min="1"
+                        CssClass="form-control"
+                        Width="120px" />
+
+                    <p class="text-muted small mt-3 mb-0">
+                        El guardado de productos en el pedido se implementará en el siguiente paso.
+                    </p>
+
+                </asp:Panel>
+
+            </asp:Panel>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+        <div id="zonaGestion">
+
+            <asp:Panel ID="pnlPedido"
+                runat="server"
+                Visible="false"
+                CssClass="pedido-detalle mt-4">
+
+                <asp:HiddenField ID="hfPedidoId" runat="server" />
+
+                <div class="mb-4">
+                    <h3 class="fw-bold mb-2">Gestionar pedido</h3>
+
+                    <asp:Label ID="lblPedidoElegido"
+                        runat="server"
+                        CssClass="text-muted" />
+                </div>
+
+                <h5 class="fw-bold mb-3">Comidas y bebidas disponibles</h5>
+
+                <div class="table-responsive">
+
+                    <asp:GridView ID="gvConsumiciones"
+                        runat="server"
+                        AutoGenerateColumns="false"
+                        GridLines="None"
+                        CssClass="table table-hover align-middle">
+
+                        <Columns>
+
+                            <asp:BoundField DataField="Nombre"
+                                HeaderText="Producto" />
+
+                            <asp:BoundField DataField="Tipo"
+                                HeaderText="Tipo" />
+
+                            <asp:BoundField DataField="Precio"
+                                HeaderText="Precio"
+                                DataFormatString="{0:N2}" />
+
+                            <asp:BoundField DataField="StockActual"
+                                HeaderText="Stock" />
+
+                            <asp:TemplateField HeaderText="Acción">
+                                <ItemTemplate>
+
+                                    <asp:LinkButton
+                                        ID="btnElegirConsumicion"
+                                        runat="server"
+                                        Text="Seleccionar"
+                                        CssClass="btn btn-primary btn-sm"
+                                        CommandArgument='<%# Eval("ID") %>'
+                                        CommandName='<%# Eval("Nombre") %>'
+                                        OnCommand="btnElegirConsumicion_Command" />
+
+                                </ItemTemplate>
+                            </asp:TemplateField>
+
+                        </Columns>
+
+                    </asp:GridView>
+
+                </div>
+
+
+                <asp:Panel ID="pnlAgregar"
+                    runat="server"
+                    Visible="false"
+                    CssClass="producto-seleccionado mt-4">
+
+                    <asp:HiddenField ID="hfConsumicionId"
+                        runat="server" />
+
+                    <h5 class="fw-bold mb-3">Producto seleccionado</h5>
+
+                    <asp:Label ID="lblConsumicionElegida"
+                        runat="server"
+                        CssClass="d-block mb-3 fw-bold" />
+
+                    <label class="form-label">Cantidad:</label>
+
+                    <asp:TextBox ID="txtCantidad"
+                        runat="server"
+                        TextMode="Number"
+                        Text="1"
+                        min="1"
+                        CssClass="form-control"
+                        Width="120px" />
+
+                    <p class="text-muted small mt-3 mb-0">
+                        El guardado de productos en el pedido se implementará en el siguiente paso.
+                    </p>
+
+                </asp:Panel>
+
+            </asp:Panel>
+
+        </div>
 
     </div>
 
 </asp:Content>
+
 
 <%--<%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="PanelMesero.aspx.cs" Inherits="TPC_RestoBar_Equipo_X.PanelMesero" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">

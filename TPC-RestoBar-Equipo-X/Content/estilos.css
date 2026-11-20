@@ -53,3 +53,123 @@ label {
 a {
     color: #93c5fd;
 }
+
+
+
+/* =========================
+   PANEL MESERO
+   ========================= */
+
+.resto-panel {
+    background-color: #141d2c;
+    color: #f8fafc;
+    padding: 24px;
+    border-radius: 16px;
+}
+
+    .resto-panel .text-muted {
+        color: #aebed0 !important;
+    }
+
+.etiqueta-panel {
+    background-color: #1e40af;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.selector-panel {
+    background-color: #202b3e;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #374151;
+}
+
+    .selector-panel .form-select {
+        max-width: 350px;
+    }
+
+.mesa-card {
+    background-color: #202b3e;
+    border: 1px solid #374151;
+    border-left: 4px solid #3b82f6;
+    border-radius: 14px;
+    padding: 20px;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+    .mesa-card:hover {
+        transform: translateY(-2px);
+        border-color: #60a5fa;
+    }
+
+.estado-abierto {
+    display: inline-block;
+    background-color: #14532d;
+    color: #86efac;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.btn-gestionar {
+    display: inline-block;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: white !important;
+    text-decoration: none;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+}
+
+    .btn-gestionar:hover {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 14px rgba(37, 99, 235, 0.35);
+        color: white !important;
+    }
+
+.pedido-detalle {
+    background-color: #202b3e;
+    border: 1px solid #374151;
+    border-radius: 14px;
+    padding: 24px;
+}
+
+.producto-seleccionado {
+    background-color: #172235;
+    border: 1px solid #3b82f6;
+    border-radius: 12px;
+    padding: 18px;
+}
+
+.resto-panel .table {
+    --bs-table-bg: #202b3e;
+    --bs-table-color: #f8fafc;
+    --bs-table-border-color: #475569;
+    --bs-table-hover-bg: #29384f;
+    --bs-table-hover-color: #ffffff;
+}
+
+#zonaGestion {
+    scroll-margin-top: 24px;
+}
+
+@media (max-width: 576px) {
+    .resto-panel {
+        padding: 14px;
+    }
+
+    .pedido-detalle {
+        padding: 14px;
+    }
+}
+
+/* FIN PANEL MESERO */

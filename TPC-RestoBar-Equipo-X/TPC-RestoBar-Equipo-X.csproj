@@ -88,6 +88,8 @@
     </Compile>
     <Compile Include="DatosNegocio\AsignacionMesaNegocio.cs" />
     <Compile Include="DatosNegocio\InsumosNegocio.cs" />
+    <Compile Include="DatosNegocio\MesaNegocio.cs" />
+    <Compile Include="DatosNegocio\MeserosNegocio.cs" />
     <Compile Include="DatosNegocio\PanelMeseroNegocio.cs" />
     <Compile Include="Dominio\Consumicion.cs" />
     <Compile Include="Dominio\Mesa.cs" />
