@@ -8,20 +8,20 @@ namespace TPC_RestoBar_Equipo_X.DatosNegocio
 {
     public class InsumosNegocio
     {
-        public List<insumos> listar()
+        public List<Insumo> listar()
         {
-            List<insumos> lista = new List<insumos>();
+            List<Insumo> lista = new List<Insumo>();
             AccesoADatos datos = new AccesoADatos();
 
             try
             {
-                datos.setearConsulta("SELECT IdInsumo, Nombre, Tipo, StockActual, PrecioVenta, Activo FROM Insumos WHERE Activo = 1");
+                datos.setearConsulta("SELECT Id, Nombre, Tipo, StockActual, PrecioVenta, Activo FROM Insumos WHERE Activo = 1");
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
                 {
-                    insumos aux = new insumos();
-                    aux.IdInsumo = (int)datos.Lector["IdInsumo"];
+                    Insumo aux = new Insumo();
+                    aux.Id = (int)datos.Lector["Id"];
                     aux.Nombre = (string)datos.Lector["Nombre"];
                     aux.Tipo = (string)datos.Lector["Tipo"];
                     aux.StockActual = (int)datos.Lector["StockActual"];
@@ -35,7 +35,7 @@ namespace TPC_RestoBar_Equipo_X.DatosNegocio
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
             finally
             {
@@ -43,12 +43,27 @@ namespace TPC_RestoBar_Equipo_X.DatosNegocio
             }
         }
 
-        public void guardar(insumos nuevo)
+        public void guardar(Insumo nuevo)
         {
             AccesoADatos datos = new AccesoADatos();
 
             try
             {
+                if (nuevo.Id != default(int))
+                {
+                    datos.setearConsulta("UPDATE Insumos SET Nombre = @Nombre, Tipo = @Tipo, " +
+                                         "StockActual = @StockActual, PrecioVenta = @PrecioVenta, Activo = 1 " +
+                                         "WHERE Id = @Id");
+
+                    datos.setearParametro("@Id", nuevo.Id);
+                    datos.setearParametro("@Nombre", nuevo.Nombre);
+                    datos.setearParametro("@Tipo", nuevo.Tipo);
+                    datos.setearParametro("@StockActual", nuevo.StockActual);
+                    datos.setearParametro("@PrecioVenta", nuevo.PrecioVenta);
+
+                    datos.ejecutarAccion();
+                    return;
+                }
                 datos.setearConsulta("INSERT INTO Insumos (Nombre, Tipo, StockActual, PrecioVenta, Activo) " +
                                       "VALUES (@Nombre, @Tipo, @StockActual, @PrecioVenta, 1)");
 
@@ -61,7 +76,7 @@ namespace TPC_RestoBar_Equipo_X.DatosNegocio
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
             finally
             {
@@ -74,7 +89,7 @@ namespace TPC_RestoBar_Equipo_X.DatosNegocio
             AccesoADatos datos = new AccesoADatos();
             try
             {
-                datos.setearConsulta("UPDATE Insumos SET Activo = 0 WHERE IdInsumo = @id");
+                datos.setearConsulta("UPDATE Insumos SET Activo = 0 WHERE Id = @id");
                 datos.setearParametro("@id", id);
 
                 datos.ejecutarAccion();
@@ -88,18 +103,18 @@ namespace TPC_RestoBar_Equipo_X.DatosNegocio
                 datos.cerrarConexion();
             }
         }
-        public void modificar(insumos modificado)
+        public void modificar(Insumo modificado)
         {
             AccesoADatos datos = new AccesoADatos();
             try
             {
-                datos.setearConsulta("UPDATE Insumos SET Nombre = @Nombre, Tipo = @Tipo, StockActual = @StockActual, PrecioVenta = @PrecioVenta WHERE IdInsumo = @IdInsumo");
+                datos.setearConsulta("UPDATE Insumos SET Nombre = @Nombre, Tipo = @Tipo, StockActual = @StockActual, PrecioVenta = @PrecioVenta WHERE Id = @Id");
 
                 datos.setearParametro("@Nombre", modificado.Nombre);
                 datos.setearParametro("@Tipo", modificado.Tipo);
                 datos.setearParametro("@StockActual", modificado.StockActual);
                 datos.setearParametro("@PrecioVenta", modificado.PrecioVenta);
-                datos.setearParametro("@IdInsumo", modificado.IdInsumo);
+                datos.setearParametro("@Id", modificado.Id);
 
                 datos.ejecutarAccion();
             }
@@ -112,19 +127,19 @@ namespace TPC_RestoBar_Equipo_X.DatosNegocio
                 datos.cerrarConexion();
             }
         }
-        public insumos buscarPorId(int id)
+        public Insumo buscarPorId(int id)
         {
             AccesoADatos datos = new AccesoADatos();
             try
             {
-                datos.setearConsulta("SELECT IdInsumo, Nombre, Tipo, StockActual, PrecioVenta, Activo FROM Insumos WHERE IdInsumo = @id");
+                datos.setearConsulta("SELECT Id, Nombre, Tipo, StockActual, PrecioVenta, Activo FROM Insumos WHERE Id = @id");
                 datos.setearParametro("@id", id);
                 datos.ejecutarLectura();
 
                 if (datos.Lector.Read())
                 {
-                    insumos aux = new insumos();
-                    aux.IdInsumo = (int)datos.Lector["IdInsumo"];
+                    Insumo aux = new Insumo();
+                    aux.Id = (int)datos.Lector["Id"];
                     aux.Nombre = (string)datos.Lector["Nombre"];
                     aux.Tipo = (string)datos.Lector["Tipo"];
                     aux.StockActual = (int)datos.Lector["StockActual"];

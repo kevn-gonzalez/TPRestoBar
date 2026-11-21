@@ -20,10 +20,10 @@
     <div class="card border border-light shadow-sm">
         <div class="card-body p-0">
             <asp:GridView ID="dgvInsumos" runat="server" AutoGenerateColumns="False"
-                DataKeyNames="IdInsumo" OnRowCommand="dgvInsumos_RowCommand"
+                DataKeyNames="Id" OnRowCommand="dgvInsumos_RowCommand"
                 CssClass="table table-striped table-hover align-middle mb-0" GridLines="None">
                 <Columns>
-                    <asp:BoundField DataField="IdInsumo" HeaderText="ID" ItemStyle-CssClass="fw-bold text-secondary" />
+                    <asp:BoundField DataField="Id" HeaderText="ID" ItemStyle-CssClass="fw-bold text-secondary" />
                     <asp:BoundField DataField="Nombre" HeaderText="Insumo" />
                     <asp:BoundField DataField="Tipo" HeaderText="Categoría" />
                     <asp:BoundField DataField="StockActual" HeaderText="Stock Actual" />

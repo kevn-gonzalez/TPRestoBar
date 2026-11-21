@@ -78,15 +78,6 @@ namespace TPC_RestoBar_Equipo_X
         protected global::System.Web.UI.WebControls.Label Label1;
 
         /// <summary>
-        /// Control GridView1.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GridView1;
-
-        /// <summary>
         /// Control Panel2.
         /// </summary>
         /// <remarks>
@@ -150,6 +141,15 @@ namespace TPC_RestoBar_Equipo_X
         protected global::System.Web.UI.WebControls.Label lblPedidoElegido;
 
         /// <summary>
+        /// Control dgvProductosDisponibles.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView dgvProductosDisponibles;
+
+        /// <summary>
         /// Control gvConsumiciones.
         /// </summary>
         /// <remarks>
@@ -157,6 +157,15 @@ namespace TPC_RestoBar_Equipo_X
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvConsumiciones;
+
+        /// <summary>
+        /// Control btnAgregarConsumicion.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnAgregarConsumicion;
 
         /// <summary>
         /// Control pnlAgregar.
@@ -168,13 +177,13 @@ namespace TPC_RestoBar_Equipo_X
         protected global::System.Web.UI.WebControls.Panel pnlAgregar;
 
         /// <summary>
-        /// Control hfConsumicionId.
+        /// Control hfInsumoId.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hfConsumicionId;
+        protected global::System.Web.UI.WebControls.HiddenField hfInsumoId;
 
         /// <summary>
         /// Control lblConsumicionElegida.

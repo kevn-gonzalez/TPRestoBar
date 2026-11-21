@@ -18,7 +18,7 @@ namespace TPC_RestoBar_Equipo_X.DatosNegocio
 
             try
             {
-                datos.setearConsulta("SELECT ID, Nombre FROM Usuarios WHERE TipoPerfil = 'Mesero' ORDER BY Nombre");
+                datos.setearConsulta("SELECT Id, Nombre FROM Usuarios WHERE TipoPerfil = 'Mesero' ORDER BY Nombre");
 
                 datos.ejecutarLectura();
 
@@ -49,18 +49,18 @@ namespace TPC_RestoBar_Equipo_X.DatosNegocio
 
             UPDATE Mesa
             SET Estado = 'Ocupada'
-            WHERE ID = @idMesa AND Estado = 'Libre'
+            WHERE Id = @idMesa AND Estado = 'Libre'
             AND NOT EXISTS (
                 SELECT 1 FROM Pedidos
-                WHERE ID_Mesa = @idMesa AND Estado = 'Abierto'
+                WHERE Id = @idMesa AND Estado = 'Abierto'
             );
 
             IF @@ROWCOUNT = 1
             BEGIN
-                INSERT INTO Pedidos (ID_Mesa, ID_Mesero, Estado)
+                INSERT INTO Pedidos (MesaId, MeseroId, Estado)
                 SELECT @idMesa, ID, 'Abierto'
                 FROM Usuarios
-                WHERE ID = @idMesero AND TipoPerfil = 'Mesero';
+                WHERE Id = @idMesero AND TipoPerfil = 'Mesero';
 
                 IF @@ROWCOUNT = 1
                 BEGIN

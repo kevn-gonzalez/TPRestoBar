@@ -25,7 +25,7 @@ namespace TPC_RestoBar_Equipo_X.DatosNegocio
                 {
                     Mesa aux = new Mesa();
 
-                    aux.ID = (int)datos.Lector["ID"];
+                    aux.Id = (int)datos.Lector["Id"];
                     aux.NumeroMesa = (int)datos.Lector["NumeroMesa"];
                     aux.Capacidad = (int)datos.Lector["Capacidad"];
                     aux.Estado = (string)datos.Lector["Estado"];
@@ -70,7 +70,7 @@ namespace TPC_RestoBar_Equipo_X.DatosNegocio
             AccesoADatos datos = new AccesoADatos();
             try
             {
-                datos.setearConsulta("UPDATE Insumos SET Activo = 0 WHERE IdInsumo = @id");
+                datos.setearConsulta("UPDATE Mesa SET Activo = 0 WHERE Id = @id");
                 datos.setearParametro("@id", id);
 
                 datos.ejecutarAccion();
@@ -84,18 +84,18 @@ namespace TPC_RestoBar_Equipo_X.DatosNegocio
                 datos.cerrarConexion();
             }
         }
-        public void modificar(insumos modificado)
+        public void modificar(Mesa modificado)
         {
             AccesoADatos datos = new AccesoADatos();
             try
             {
-                datos.setearConsulta("UPDATE Insumos SET Nombre = @Nombre, Tipo = @Tipo, StockActual = @StockActual, PrecioVenta = @PrecioVenta WHERE IdInsumo = @IdInsumo");
+                datos.setearConsulta("UPDATE Mesa SET NumeroMesa = @NumeroMesa, Capacidad = @Capacidad, Estado = @Estado, WHERE Id = @id");
 
-                datos.setearParametro("@Nombre", modificado.Nombre);
+                datos.setearParametro("@NumeroMesa", modificado.NumeroMesa);
                 
-                datos.setearParametro("@StockActual", modificado.StockActual);
-                datos.setearParametro("@PrecioVenta", modificado.PrecioVenta);
-                datos.setearParametro("@IdInsumo", modificado.IdInsumo);
+                datos.setearParametro("@Capacidad", modificado.Capacidad);
+                datos.setearParametro("@Estado", modificado.Estado);
+                datos.setearParametro("@Id", modificado.Id);
 
                 datos.ejecutarAccion();
             }
@@ -108,24 +108,24 @@ namespace TPC_RestoBar_Equipo_X.DatosNegocio
                 datos.cerrarConexion();
             }
         }
-        public insumos buscarPorId(int id)
+        public Mesa buscarPorId(int id)
         {
             AccesoADatos datos = new AccesoADatos();
             try
             {
-                datos.setearConsulta("SELECT IdInsumo, Nombre, Tipo, StockActual, PrecioVenta, Activo FROM Insumos WHERE IdInsumo = @id");
+                datos.setearConsulta("SELECT Id, NumeroMesa, Capacidad, Estado, FROM Mesa WHERE Id = @id");
                 datos.setearParametro("@id", id);
                 datos.ejecutarLectura();
 
                 if (datos.Lector.Read())
                 {
-                    insumos aux = new insumos();
-                    aux.IdInsumo = (int)datos.Lector["IdInsumo"];
-                    aux.Nombre = (string)datos.Lector["Nombre"];
+                    Mesa aux = new Mesa();
+                    aux.Id = (int)datos.Lector["Id"];
+                    aux.NumeroMesa = (int)datos.Lector["NumeroMesa"];
                     
-                    aux.StockActual = (int)datos.Lector["StockActual"];
-                    aux.PrecioVenta = (decimal)datos.Lector["PrecioVenta"];
-                    aux.Activo = (bool)datos.Lector["Activo"];
+                    aux.Capacidad = (int)datos.Lector["Capacidad"];
+                    
+                    aux.Estado = (string)datos.Lector["Estado"];
                     return aux;
                 }
                 return null;

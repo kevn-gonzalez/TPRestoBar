@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using TPC_RestoBar_Equipo_X.DatosNegocio;
+using TPC_RestoBar_Equipo_X.Dominio;
 
 namespace TPC_RestoBar_Equipo_X
 {
@@ -23,6 +24,8 @@ namespace TPC_RestoBar_Equipo_X
 
                 ddlMeseros.Items.Insert(0,
                     new ListItem("Seleccioná un mesero", ""));
+
+                cargarGrillaInsumos();
             }
         }
 
@@ -52,12 +55,28 @@ namespace TPC_RestoBar_Equipo_X
 
                 lblSinPedidos.Visible = pedidos.Count == 0;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 lblMensaje.Text = "Error al cargar los pedidos.";
             }
         }
 
+        private void cargarGrillaInsumos()
+        {
+            try
+            {
+                InsumosNegocio insumoNegocio = new InsumosNegocio();
+                List<Insumo> listaInsumos = new List<Insumo>();
+                listaInsumos = insumoNegocio.listar();
+                dgvProductosDisponibles.DataSource = listaInsumos;
+                dgvProductosDisponibles.DataBind();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            
+        }
         protected void btnGestionar_Command(object sender, CommandEventArgs e)
         {
             int idPedido;
@@ -72,10 +91,12 @@ namespace TPC_RestoBar_Equipo_X
 
             try
             {
+
+                InsumosNegocio insumosNegocio = new InsumosNegocio();
                 PanelMeseroNegocio negocio = new PanelMeseroNegocio();
 
                 bool pertenece = negocio.listarPedidos(idMesero)
-                    .Exists(p => p.ID == idPedido);
+                    .Exists(p => p.Id == idPedido);
 
                 if (!pertenece)
                 {
@@ -83,27 +104,33 @@ namespace TPC_RestoBar_Equipo_X
                     pnlPedido.Visible = false;
                     return;
                 }
-
+                cargarGrillaInsumos();
                 hfPedidoId.Value = idPedido.ToString();
 
                 lblPedidoElegido.Text = "Pedido #" + idPedido;
-
-                gvConsumiciones.DataSource = negocio.listarConsumiciones();
-                gvConsumiciones.DataBind();
+                cargarGrillaConsumiciones();
 
                 pnlPedido.Visible = true;
                 IrAlDetalle();
                 lblMensaje.Text = "";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 lblMensaje.Text = "Error al cargar las consumiciones.";
             }
         }
 
+        private void cargarGrillaConsumiciones()
+        {
+            PanelMeseroNegocio negocio = new PanelMeseroNegocio();
+            gvConsumiciones.DataSource = negocio.listarConsumiciones();
+            gvConsumiciones.DataBind();
+        }
+
         protected void btnElegirConsumicion_Command(object sender, CommandEventArgs e)
         {
-            hfConsumicionId.Value = e.CommandArgument.ToString();
+            hfInsumoId.Value = e.CommandArgument.ToString();
+            
 
             lblConsumicionElegida.Text = "Producto: " + e.CommandName;
 
@@ -113,6 +140,8 @@ namespace TPC_RestoBar_Equipo_X
             pnlPedido.Visible = true;
             IrAlDetalle();
         }
+
+
 
         private void IrAlDetalle()
         {
@@ -127,6 +156,34 @@ namespace TPC_RestoBar_Equipo_X
             );
         }
 
+        protected void btnAgregarConsumicion_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Consumicion nuevo = new Consumicion();
+                InsumosNegocio negocioInsumo = new InsumosNegocio();
+                nuevo.InsumoId = int.Parse(hfInsumoId.Value);
+                Insumo insumo = negocioInsumo.buscarPorId(nuevo.InsumoId);
+                PanelMeseroNegocio negocio = new PanelMeseroNegocio();
+                nuevo.PedidoId = int.Parse(hfPedidoId.Value);
+                nuevo.Nombre = insumo.Nombre;
+                nuevo.Tipo = insumo.Tipo;
+                nuevo.Cantidad = int.Parse(txtCantidad.Text);
+                nuevo.Precio = insumo.PrecioVenta;
+                negocio.guardar(nuevo);
 
+                insumo.StockActual -= insumo.StockActual;
+                negocioInsumo.guardar(insumo);
+
+                cargarGrillaConsumiciones();
+                cargarGrillaInsumos();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

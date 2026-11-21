@@ -5,10 +5,10 @@ using System.Web;
 
 namespace TPC_RestoBar_Equipo_X
 {
-    public class insumos
+    public class Insumo
     {
 
-        public int IdInsumo { get; set; }
+        public int Id { get; set; }
         public string Nombre { get; set; }
         public string Tipo { get; set; } // Comida o bebida
         public int StockActual { get; set; }

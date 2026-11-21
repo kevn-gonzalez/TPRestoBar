@@ -29,7 +29,7 @@ namespace TPC_RestoBar_Equipo_X
 
                 ddlMeseros.DataSource = asignacionMesaNegocio.listarMeseros();
                 ddlMeseros.DataTextField = "Nombre";
-                ddlMeseros.DataValueField = "ID";
+                ddlMeseros.DataValueField = "Id";
                 ddlMeseros.DataBind();
 
                 ddlMeseros.Items.Insert(0, new ListItem("Seleccione un mesero", ""));
@@ -81,7 +81,7 @@ namespace TPC_RestoBar_Equipo_X
                     rptMesas.DataSource = mesaNegocio.listar();
                     rptMesas.DataBind();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     lblMensaje.Text = "Ocurrió un error al guardar la asignación.";
                     pnlAsignacion.Visible = true;

@@ -86,11 +86,10 @@
     <Compile Include="AsignacionMesa.aspx.designer.cs">
       <DependentUpon>AsignacionMesa.aspx</DependentUpon>
     </Compile>
-    <Compile Include="DatosNegocio\AsignacionMesaNegocio.cs" />
+    <Compile Include="Negocio\AsignacionMesaNegocio.cs" />
     <Compile Include="DatosNegocio\InsumosNegocio.cs" />
     <Compile Include="DatosNegocio\MesaNegocio.cs" />
-    <Compile Include="DatosNegocio\MeserosNegocio.cs" />
-    <Compile Include="DatosNegocio\PanelMeseroNegocio.cs" />
+    <Compile Include="Negocio\PanelMeseroNegocio.cs" />
     <Compile Include="Dominio\Consumicion.cs" />
     <Compile Include="Dominio\Mesa.cs" />
     <Compile Include="Dominio\Pedido.cs" />
@@ -106,7 +105,7 @@
     <Compile Include="Insumos.aspx.designer.cs">
       <DependentUpon>Insumos.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Dominio\Insumos.cs" />
+    <Compile Include="Dominio\Insumo.cs" />
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -157,7 +156,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
-    <Folder Include="Negocio\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

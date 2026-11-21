@@ -34,7 +34,7 @@ namespace TPC_RestoBar_Equipo_X
         {
             try
             {
-                insumos target = new insumos();
+                Insumo target = new Insumo();
                 target.Nombre = txtNombre.Text;
                 target.Tipo = ddlCategoria.SelectedValue;
                 target.StockActual = int.Parse(txtStock.Text);
@@ -52,7 +52,7 @@ namespace TPC_RestoBar_Equipo_X
 
                 if (ViewState["IdInsumoEditar"] != null)
                 {
-                    target.IdInsumo = (int)ViewState["IdInsumoEditar"];
+                    target.Id = (int)ViewState["IdInsumoEditar"];
                     negocio.modificar(target);
                 }
                 else
@@ -108,7 +108,7 @@ namespace TPC_RestoBar_Equipo_X
                     int idInsumo = Convert.ToInt32(dgvInsumos.DataKeys[index].Value);
 
                     // 1. Buscamos el insumo completo en la base de datos
-                    insumos seleccionado = negocio.buscarPorId(idInsumo);
+                    Insumo seleccionado = negocio.buscarPorId(idInsumo);
 
                     if (seleccionado != null)
                     {
@@ -119,7 +119,7 @@ namespace TPC_RestoBar_Equipo_X
                         txtPrecio.Text = seleccionado.PrecioVenta.ToString("0.00");
 
                         // 3. Guardamos el ID en el ViewState para no perderlo al hacer clic en guardar
-                        ViewState["IdInsumoEditar"] = seleccionado.IdInsumo;
+                        ViewState["IdInsumoEditar"] = seleccionado.Id;
 
                         // 4. Cambiamos el texto del botón del panel para que el usuario sepa que está editando
                         btnGuardar.Text = "Modificar Insumo";

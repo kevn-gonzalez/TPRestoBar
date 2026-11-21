@@ -63,8 +63,7 @@
                                     </h5>
 
                                     <p class="mb-1">
-                                        Pedido #<%#: Eval("ID") %>
-                                    </p>
+                                        Pedido #<%#: Eval("ID") %></p>
 
                                     <p class="text-muted small mb-1">
                                         Capacidad: <%#: Eval("Mesa.Capacidad") %> personas
@@ -119,49 +118,8 @@
                         CssClass="text-muted" />
                 </div>
 
-                <h5 class="fw-bold mb-3">Comidas y bebidas disponibles</h5>
-
-                <div class="table-responsive">
-
-                    <asp:GridView ID="GridView1"
-                        runat="server"
-                        AutoGenerateColumns="false"
-                        GridLines="None"
-                        CssClass="table table-hover align-middle">
-
-                        <Columns>
-
-                            <asp:BoundField DataField="Nombre"
-                                HeaderText="Producto" />
-
-                            <asp:BoundField DataField="Tipo"
-                                HeaderText="Tipo" />
-
-                            <asp:BoundField DataField="Precio"
-                                HeaderText="Precio"
-                                DataFormatString="{0:N2}" />
-
-                            <asp:BoundField DataField="StockActual"
-                                HeaderText="Stock" />
-
-                            <asp:TemplateField HeaderText="Acción">
-                                <ItemTemplate>
-                                    <asp:LinkButton
-                                        ID="btnElegirConsumicion"
-                                        runat="server"
-                                        Text="Seleccionar"
-                                        CssClass="btn btn-primary btn-sm"
-                                        CommandArgument='<%# Eval("ID") %>'
-                                        CommandName='<%# Eval("Nombre") %>'
-                                        OnCommand="btnElegirConsumicion_Command" />
-                                </ItemTemplate>
-                            </asp:TemplateField>
-
-                        </Columns>
-
-                    </asp:GridView>
-
-                </div>
+                
+                
 
                 <asp:Panel ID="Panel2"
                     runat="server"
@@ -202,7 +160,7 @@
 </div>
 
 
-        <div id="zonaGestion">
+        <div id="zonaGestion2">
 
             <asp:Panel ID="pnlPedido"
                 runat="server"
@@ -219,7 +177,49 @@
                         CssClass="text-muted" />
                 </div>
 
-                <h5 class="fw-bold mb-3">Comidas y bebidas disponibles</h5>
+                <h5 class="fw-bold mb-3">Consumiciones</h5>
+
+                <div class="table-responsive">
+
+                    <asp:GridView ID="dgvProductosDisponibles"
+                        runat="server"
+                        AutoGenerateColumns="false"
+                        GridLines="None"
+                        CssClass="table table-hover align-middle">
+
+                        <Columns>
+
+                            <asp:BoundField DataField="Nombre"
+                                HeaderText="Producto" />
+
+                            <asp:BoundField DataField="Tipo"
+                                HeaderText="Tipo" />
+
+                            <asp:BoundField DataField="PrecioVenta"
+                                HeaderText="PrecioVenta"
+                                DataFormatString="{0:N2}" />
+
+                            <asp:BoundField DataField="StockActual"
+                                HeaderText="StockActual" />
+
+                            <asp:TemplateField HeaderText="Acción">
+                                <ItemTemplate>
+                                    <asp:LinkButton
+                                        ID="btnElegirConsumicion"
+                                        runat="server"
+                                        Text="Seleccionar"
+                                        CssClass="btn btn-primary btn-sm"
+                                        CommandArgument='<%# Eval("ID") %>'
+                                        CommandName='<%# Eval("Nombre") %>'
+                                        OnCommand="btnElegirConsumicion_Command" />
+                                </ItemTemplate>
+                            </asp:TemplateField>
+
+                        </Columns>
+
+                    </asp:GridView>
+
+                </div>
 
                 <div class="table-responsive">
 
@@ -241,7 +241,7 @@
                                 HeaderText="Precio"
                                 DataFormatString="{0:N2}" />
 
-                            <asp:BoundField DataField="StockActual"
+                            <asp:BoundField DataField="Cantidad"
                                 HeaderText="Stock" />
 
                             <asp:TemplateField HeaderText="Acción">
@@ -265,13 +265,21 @@
 
                 </div>
 
+                <div class="row">
+
+                    <div class="col-6">
+                        <asp:Button OnClick="btnAgregarConsumicion_Click" ID="btnAgregarConsumicion" runat="server" Text="Agregar Consumción" CssClass="btn btn-outline-danger w-100 btn-sm fw-semibold" />
+                   
+                    </div>
+                </div>
+
 
                 <asp:Panel ID="pnlAgregar"
                     runat="server"
                     Visible="false"
                     CssClass="producto-seleccionado mt-4">
 
-                    <asp:HiddenField ID="hfConsumicionId"
+                    <asp:HiddenField ID="hfInsumoId"
                         runat="server" />
 
                     <h5 class="fw-bold mb-3">Producto seleccionado</h5>
