@@ -16,6 +16,7 @@ namespace TPC_RestoBar_Equipo_X
             {
                 try
                 {
+
                     ReportesNegocio negocio = new ReportesNegocio();
 
                     lblRecaudacion.Text = "$ " +
@@ -28,6 +29,12 @@ namespace TPC_RestoBar_Equipo_X
                         negocio.listarProductosVendidosHoy();
 
                     gvProductos.DataBind();
+
+                    gvMeseros.DataSource = negocio.listarPedidosPorMeseroHoy();
+                    gvMeseros.DataBind();
+
+                    gvMesas.DataSource = negocio.listarPedidosPorMesaHoy();
+                    gvMesas.DataBind();
                 }
                 catch (Exception)
                 {

@@ -177,132 +177,119 @@
                         CssClass="text-muted" />
                 </div>
 
-                <h5 class="fw-bold mb-3">Consumiciones</h5>
+                <h5 class="fw-bold mb-3">Productos disponibles</h5>
 
-                <div class="table-responsive">
+<div class="table-responsive">
 
-                    <asp:GridView ID="dgvProductosDisponibles"
+    <asp:GridView ID="dgvProductosDisponibles"
+        runat="server"
+        AutoGenerateColumns="false"
+        GridLines="None"
+        CssClass="table table-hover align-middle">
+
+        <Columns>
+
+            <asp:BoundField DataField="Nombre"
+                HeaderText="Producto" />
+
+            <asp:BoundField DataField="Tipo"
+                HeaderText="Tipo" />
+
+            <asp:BoundField DataField="PrecioVenta"
+                HeaderText="Precio"
+                DataFormatString="{0:N2}" />
+
+            <asp:BoundField DataField="StockActual"
+                HeaderText="Stock disponible" />
+
+            <asp:TemplateField HeaderText="Acción">
+                <ItemTemplate>
+                    <asp:LinkButton
+                        ID="btnElegirConsumicion"
                         runat="server"
-                        AutoGenerateColumns="false"
-                        GridLines="None"
-                        CssClass="table table-hover align-middle">
+                        Text="Seleccionar"
+                        CssClass="btn btn-primary btn-sm"
+                        CommandArgument='<%# Eval("ID") %>'
+                        CommandName='<%# Eval("Nombre") %>'
+                        OnCommand="btnElegirConsumicion_Command" />
+                </ItemTemplate>
+            </asp:TemplateField>
 
-                        <Columns>
+        </Columns>
 
-                            <asp:BoundField DataField="Nombre"
-                                HeaderText="Producto" />
+    </asp:GridView>
 
-                            <asp:BoundField DataField="Tipo"
-                                HeaderText="Tipo" />
+</div>
 
-                            <asp:BoundField DataField="PrecioVenta"
-                                HeaderText="PrecioVenta"
-                                DataFormatString="{0:N2}" />
+<asp:Panel ID="pnlAgregar"
+    runat="server"
+    Visible="false"
+    CssClass="producto-seleccionado mt-3">
 
-                            <asp:BoundField DataField="StockActual"
-                                HeaderText="StockActual" />
+    <asp:HiddenField ID="hfInsumoId"
+        runat="server" />
 
-                            <asp:TemplateField HeaderText="Acción">
-                                <ItemTemplate>
-                                    <asp:LinkButton
-                                        ID="btnElegirConsumicion"
-                                        runat="server"
-                                        Text="Seleccionar"
-                                        CssClass="btn btn-primary btn-sm"
-                                        CommandArgument='<%# Eval("ID") %>'
-                                        CommandName='<%# Eval("Nombre") %>'
-                                        OnCommand="btnElegirConsumicion_Command" />
-                                </ItemTemplate>
-                            </asp:TemplateField>
+    <h5 class="fw-bold mb-3">Producto seleccionado</h5>
 
-                        </Columns>
+    <asp:Label ID="lblConsumicionElegida"
+        runat="server"
+        CssClass="d-block mb-3 fw-bold" />
 
-                    </asp:GridView>
+    <label class="form-label">Cantidad:</label>
 
-                </div>
+    <asp:TextBox ID="txtCantidad"
+        runat="server"
+        TextMode="Number"
+        Text="1"
+        min="1"
+        CssClass="form-control mb-3"
+        Width="120px" />
 
-                <div class="table-responsive">
+    <asp:Button OnClick="btnAgregarConsumicion_Click"
+        ID="btnAgregarConsumicion"
+        runat="server"
+        Text="Agregar consumición"
+        CssClass="btn btn-outline-danger btn-sm fw-semibold" />
 
-                    <asp:GridView ID="gvConsumiciones"
-                        runat="server"
-                        AutoGenerateColumns="false"
-                        GridLines="None"
-                        CssClass="table table-hover align-middle">
+</asp:Panel>
 
-                        <Columns>
+<hr class="my-4 border-2 opacity-50" />
 
-                            <asp:BoundField DataField="Nombre"
-                                HeaderText="Producto" />
+<h5 class="fw-bold mb-3">
+    <asp:Label ID="lblTituloPedidosMesa"
+        runat="server"
+        Text="Pedidos de la mesa" />
+</h5>
 
-                            <asp:BoundField DataField="Tipo"
-                                HeaderText="Tipo" />
+<div class="table-responsive">
 
-                            <asp:BoundField DataField="Precio"
-                                HeaderText="Precio"
-                                DataFormatString="{0:N2}" />
+    <asp:GridView ID="gvConsumiciones"
+        runat="server"
+        AutoGenerateColumns="false"
+        GridLines="None"
+        CssClass="table table-sm table-striped align-middle"
+        EmptyDataText="Todavía no se agregó ninguna consumición a este pedido.">
 
-                            <asp:BoundField DataField="Cantidad"
-                                HeaderText="Stock" />
+        <Columns>
 
-                            <asp:TemplateField HeaderText="Acción">
-                                <ItemTemplate>
+            <asp:BoundField DataField="Nombre"
+                HeaderText="Producto" />
 
-                                    <asp:LinkButton
-                                        ID="btnElegirConsumicion"
-                                        runat="server"
-                                        Text="Seleccionar"
-                                        CssClass="btn btn-primary btn-sm"
-                                        CommandArgument='<%# Eval("ID") %>'
-                                        CommandName='<%# Eval("Nombre") %>'
-                                        OnCommand="btnElegirConsumicion_Command" />
+            <asp:BoundField DataField="Tipo"
+                HeaderText="Tipo" />
 
-                                </ItemTemplate>
-                            </asp:TemplateField>
+            <asp:BoundField DataField="Precio"
+                HeaderText="Precio"
+                DataFormatString="{0:N2}" />
 
-                        </Columns>
+            <asp:BoundField DataField="Cantidad"
+                HeaderText="Cantidad" />
 
-                    </asp:GridView>
+        </Columns>
 
-                </div>
+    </asp:GridView>
 
-                <div class="row">
-
-                    <div class="col-6">
-                        <asp:Button OnClick="btnAgregarConsumicion_Click" ID="btnAgregarConsumicion" runat="server" Text="Agregar Consumción" CssClass="btn btn-outline-danger w-100 btn-sm fw-semibold" />
-                   
-                    </div>
-                </div>
-
-
-                <asp:Panel ID="pnlAgregar"
-                    runat="server"
-                    Visible="false"
-                    CssClass="producto-seleccionado mt-4">
-
-                    <asp:HiddenField ID="hfInsumoId"
-                        runat="server" />
-
-                    <h5 class="fw-bold mb-3">Producto seleccionado</h5>
-
-                    <asp:Label ID="lblConsumicionElegida"
-                        runat="server"
-                        CssClass="d-block mb-3 fw-bold" />
-
-                    <label class="form-label">Cantidad:</label>
-
-                    <asp:TextBox ID="txtCantidad"
-                        runat="server"
-                        TextMode="Number"
-                        Text="1"
-                        min="1"
-                        CssClass="form-control"
-                        Width="120px" />
-
-                    <p class="text-muted small mt-3 mb-0">
-                        El guardado de productos en el pedido se implementará en el siguiente paso.
-                    </p>
-
-                </asp:Panel>
+</div>
 
                     <div class="mt-4 pt-3 border-top">
 

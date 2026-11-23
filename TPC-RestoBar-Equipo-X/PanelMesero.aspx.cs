@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using TPC_RestoBar_Equipo_X.AccesoDatos;
 using TPC_RestoBar_Equipo_X.DatosNegocio;
 using TPC_RestoBar_Equipo_X.Dominio;
 
@@ -108,6 +109,7 @@ namespace TPC_RestoBar_Equipo_X
                 hfPedidoId.Value = idPedido.ToString();
 
                 lblPedidoElegido.Text = "Pedido #" + idPedido;
+                lblTituloPedidosMesa.Text = "Pedidos de la mesa: " + negocio.obtenerNumeroMesa(idPedido);
                 cargarGrillaConsumiciones();
 
                 lblTotalPedido.Text = "Total: $" +
@@ -247,5 +249,6 @@ namespace TPC_RestoBar_Equipo_X
                 pnlPedido.Visible = true;
             }
         }
+        
     }
 }

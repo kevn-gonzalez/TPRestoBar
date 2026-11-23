@@ -150,24 +150,6 @@ namespace TPC_RestoBar_Equipo_X
         protected global::System.Web.UI.WebControls.GridView dgvProductosDisponibles;
 
         /// <summary>
-        /// Control gvConsumiciones.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvConsumiciones;
-
-        /// <summary>
-        /// Control btnAgregarConsumicion.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAgregarConsumicion;
-
-        /// <summary>
         /// Control pnlAgregar.
         /// </summary>
         /// <remarks>
@@ -202,6 +184,33 @@ namespace TPC_RestoBar_Equipo_X
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtCantidad;
+
+        /// <summary>
+        /// Control btnAgregarConsumicion.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnAgregarConsumicion;
+
+        /// <summary>
+        /// Control lblTituloPedidosMesa.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTituloPedidosMesa;
+
+        /// <summary>
+        /// Control gvConsumiciones.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvConsumiciones;
 
         /// <summary>
         /// Control lblTotalPedido.

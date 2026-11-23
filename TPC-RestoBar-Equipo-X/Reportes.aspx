@@ -55,7 +55,7 @@
         </div>
 
 
-        <div class="card shadow-sm border-0">
+        <div class="card shadow-sm border-0 mb-4">
 
             <div class="card-header py-3">
                 <h5 class="fw-bold mb-0">
@@ -95,6 +95,80 @@
 
                 </div>
 
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0 mb-4">
+
+            <div class="card-header py-3">
+                <h5 class="fw-bold mb-0">Pedidos por meseros gestionados hoy</h5>
+                
+            </div>
+
+            <div class="card-body">
+
+                <div class="table-responsive">
+
+                    <asp:GridView ID="gvMeseros"
+                        runat="server"
+                        AutoGenerateColumns="false"
+                        GridLines="None"
+                        CssClass="table table-hover align-middle"
+                        EmptyDataText="Todavía no hay pedidos gestionados hoy.">
+
+                        <Columns>
+
+                            <asp:BoundField DataField="Mesero"
+                                HeaderText="Mesero" />
+
+                            <asp:BoundField DataField="CantidadPedidosXMesero"
+                                HeaderText="Cantidad de pedidos por mesero" />
+
+
+                            <asp:BoundField DataField="TotalRecaudadoXMesero"
+                                HeaderText="Total recaudado por mesero"
+                                DataFormatString="{0:N2}" />
+
+                        </Columns>
+
+                    </asp:GridView>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0 mb-4">
+
+            <div class="card-header py-3">
+                <h5 class="fw-bold mb-0">Pedidos y recaudación por mesa hoy</h5>
+            </div>
+
+            <div class="card-body">
+                <div class="table-responsive">
+
+                    <asp:GridView ID="gvMesas"
+                        runat="server"
+                        AutoGenerateColumns="false"
+                        GridLines="None"
+                        CssClass="table table-hover align-middle"
+                        EmptyDataText="Todavía no hay pedidos cobrados por mesa hoy.">
+
+                        <Columns>
+                            <asp:BoundField DataField="Mesa"
+                                HeaderText="Mesa" />
+
+                            <asp:BoundField DataField="CantidadPedidosXMesa"
+                                HeaderText="Cantidad de pedidos" />
+
+                            <asp:BoundField DataField="TotalRecaudadoXMesa"
+                                HeaderText="Total recaudado por mesa"
+                                DataFormatString="{0:N2}" />
+                        </Columns>
+
+                    </asp:GridView>
+
+                </div>
             </div>
         </div>
 
