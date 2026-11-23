@@ -304,6 +304,79 @@
 
                 </asp:Panel>
 
+                    <div class="mt-4 pt-3 border-top">
+
+                        <asp:Label
+                            ID="lblTotalPedido"
+                            runat="server"
+                            Text="Total: $0,00"
+                            CssClass="d-block fs-4 fw-bold mb-3" />
+
+                        <button type="button"
+                            class="btn btn-success w-100"
+                            data-bs-toggle="dialog"
+                            data-bs-target="#dialogConfirmarCobro">
+                            Confirmar cobro y liberar mesa
+                        </button>
+
+                    </div>
+
+                    <dialog class="dialog dialog-cobro"
+                        id="dialogConfirmarCobro"
+                        data-bs-theme="dark"
+                        aria-labelledby="tituloDialogCobro">
+
+                        <div class="dialog-header">
+
+                            <h5 class="dialog-title fw-bold"
+                                id="tituloDialogCobro">
+                                Confirmar cobro
+                            </h5>
+
+                            <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="dialog"
+                                aria-label="Cerrar">
+                            </button>
+
+                        </div>
+
+                        <div class="dialog-body text-center">
+
+                            <div class="icono-cobro mb-3">
+                                ✓
+                            </div>
+
+                            <h5 class="fw-bold">
+                                ¿Finalizar este pedido?
+                            </h5>
+
+                            <p class="text-secondary">
+                                El pedido quedará marcado como pagado
+                                y la mesa volverá a estar libre.
+                            </p>
+
+                        </div>
+
+                        <div class="dialog-footer">
+
+                            <button type="button"
+                                class="btn btn-outline-secondary"
+                                data-bs-dismiss="dialog">
+                                Cancelar
+                            </button>
+
+                            <asp:Button
+                                ID="btnCerrarPedido"
+                                runat="server"
+                                Text="Sí, confirmar cobro"
+                                CssClass="btn btn-success"
+                                OnClick="btnCerrarPedido_Click" />
+
+                        </div>
+
+                    </dialog>
+
             </asp:Panel>
 
         </div>

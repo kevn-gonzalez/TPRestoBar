@@ -113,6 +113,95 @@ namespace TPC_RestoBar_Equipo_X.DatosNegocio
                 datos.cerrarConexion();
             }
         }
+
+        public decimal obtenerTotal(int idPedido)
+        {
+            AccesoADatos datos = new AccesoADatos();
+
+            try
+            {
+                datos.setearConsulta(@"
+            SELECT ISNULL(SUM(Precio * Cantidad), 0) AS Total
+            FROM Consumiciones
+            WHERE PedidoId = @idPedido");
+
+                datos.setearParametro("@idPedido", idPedido);
+                datos.ejecutarLectura();
+
+                if (datos.Lector.Read())
+                {
+                    return Convert.ToDecimal(datos.Lector["Total"]);
+                }
+
+                return 0;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public bool cerrarPedido(int idPedido, int idMesero)
+        {
+            AccesoADatos datos = new AccesoADatos();
+
+            try
+            {
+                datos.setearConsulta(@"
+            SET XACT_ABORT ON;
+            BEGIN TRANSACTION;
+
+            UPDATE Pedidos
+            SET Estado = 'Pagado',
+                FechaCierre = GETDATE()
+            WHERE Id = @idPedido
+              AND MeseroId = @idMesero
+              AND Estado = 'Abierto'
+              AND EXISTS (
+                  SELECT 1 FROM Consumiciones
+                  WHERE PedidoId = @idPedido
+                  AND Cantidad > 0
+              );
+
+            IF @@ROWCOUNT = 1
+            BEGIN
+                UPDATE Mesa
+                SET Estado = 'Libre'
+                WHERE Id = (
+                    SELECT MesaId FROM Pedidos
+                    WHERE Id = @idPedido
+                )
+                AND Estado = 'Ocupada';
+
+                IF @@ROWCOUNT = 1
+                BEGIN
+                    COMMIT TRANSACTION;
+                    SELECT 1;
+                END
+                ELSE
+                BEGIN
+                    ROLLBACK TRANSACTION;
+                    SELECT 0;
+                END
+            END
+            ELSE
+            BEGIN
+                ROLLBACK TRANSACTION;
+                SELECT 0;
+            END");
+
+                datos.setearParametro("@idPedido", idPedido);
+                datos.setearParametro("@idMesero", idMesero);
+
+                return datos.ejecutarScalar() == 1;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+
     }
 }
 

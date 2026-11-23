@@ -54,12 +54,7 @@ a {
     color: #93c5fd;
 }
 
-
-
-/* =========================
-   PANEL MESERO
-   ========================= */
-
+/* PANEL MESERO */
 .resto-panel {
     background-color: #141d2c;
     color: #f8fafc;
@@ -171,5 +166,44 @@ a {
         padding: 14px;
     }
 }
-
 /* FIN PANEL MESERO */
+
+/* CONFIRMACION DE COBRO */
+.modal-cobro .modal-content {
+    background-color: #202b3e;
+    color: #f8fafc;
+    border: 1px solid #475569;
+    border-radius: 18px;
+    padding: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.modal-cobro .modal-header,
+.modal-cobro .modal-footer {
+    border: none;
+}
+
+.modal-cobro .icono-cobro {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 65px;
+    height: 65px;
+    margin: auto;
+    border-radius: 50%;
+    background-color: #14532d;
+    color: #86efac;
+    font-size: 34px;
+    font-weight: bold;
+}
+
+.modal-cobro .modal-footer {
+    justify-content: center;
+    gap: 10px;
+}
+
+.modal-cobro .btn {
+    border-radius: 10px;
+    padding: 10px 18px;
+}
+/* FIN CONFIRMACION DE COBRO */

@@ -110,6 +110,9 @@ namespace TPC_RestoBar_Equipo_X
                 lblPedidoElegido.Text = "Pedido #" + idPedido;
                 cargarGrillaConsumiciones();
 
+                lblTotalPedido.Text = "Total: $" +
+                negocio.obtenerTotal(idPedido).ToString("N2");
+
                 pnlPedido.Visible = true;
                 IrAlDetalle();
                 lblMensaje.Text = "";
@@ -145,15 +148,13 @@ namespace TPC_RestoBar_Equipo_X
             IrAlDetalle();
         }
 
-
-
         private void IrAlDetalle()
         {
             ClientScript.RegisterStartupScript(
                 GetType(),
                 "irDetalle",
                 "window.addEventListener('load', function() {" +
-                "document.getElementById('zonaGestion').scrollIntoView(" +
+                "document.getElementById('zonaGestion2').scrollIntoView(" +
                 "{ behavior: 'smooth', block: 'start' });" +
                 "});",
                 true
@@ -193,11 +194,57 @@ namespace TPC_RestoBar_Equipo_X
 
                 cargarGrillaConsumiciones();
                 cargarGrillaInsumos();
+                lblTotalPedido.Text = "Total: $" +
+                negocio.obtenerTotal(nuevo.PedidoId).ToString("N2");
                 pnlAgregar.Visible = false;
             }
             catch (Exception)
             {
                 lblMensaje.Text = "Error al agregar la consumición.";
+            }
+        }
+
+        protected void btnCerrarPedido_Click(object sender, EventArgs e)
+        {
+            int idPedido;
+            int idMesero;
+
+            if (!int.TryParse(hfPedidoId.Value, out idPedido) ||
+                !int.TryParse(ddlMeseros.SelectedValue, out idMesero))
+            {
+                lblMensaje.Text = "Seleccioná un pedido válido.";
+                return;
+            }
+
+            try
+            {
+                PanelMeseroNegocio negocio = new PanelMeseroNegocio();
+
+                bool cerrado = negocio.cerrarPedido(idPedido, idMesero);
+
+                if (cerrado)
+                {
+                    lblMensaje.Text = "Pedido cobrado y mesa liberada.";
+                    lblMensaje.CssClass = "d-block mb-3 text-success";
+
+                    pnlPedido.Visible = false;
+                    pnlAgregar.Visible = false;
+
+                    rptPedidos.DataSource = negocio.listarPedidos(idMesero);
+                    rptPedidos.DataBind();
+                }
+                else
+                {
+                    lblMensaje.Text =
+                        "No se pudo cerrar el pedido. Verificá que siga abierto y tenga consumiciones.";
+
+                    pnlPedido.Visible = true;
+                }
+            }
+            catch (Exception)
+            {
+                lblMensaje.Text = "Ocurrió un error al cerrar el pedido.";
+                pnlPedido.Visible = true;
             }
         }
     }
