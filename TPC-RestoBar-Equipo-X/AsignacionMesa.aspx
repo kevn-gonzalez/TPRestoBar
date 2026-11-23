@@ -3,101 +3,135 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
     <!-- Cabecera de la sección -->
-    <div class="d-flex align-items-center mb-4 border-bottom pb-3">
-        <i class="bi bi-calendar-check text-primary fs-3 me-2"></i>
-        <div>
-            <h2 class="mb-0 fw-bold text-dark">Mapa de Asignación de Mesas</h2>
-            <small class="text-secondary">Hacé clic sobre una mesa para ver su estado o gestionar sus pedidos.</small>
-        </div>
+    <div style="border-bottom: 1px solid #334155; padding-bottom: 14px; margin-bottom: 18px;">
+        <h2 style="margin: 0 0 4px 0; font-weight: bold; color: #f8fafc;">Mapa de Asignación de Mesas</h2>
+        <small style="color: #94a3b8;">Hacé clic sobre una mesa para asignar un mesero o liberarla.</small>
     </div>
 
     <!-- Referencias de Colores -->
-    <div class="hstack gap-3 mb-4 bg-light p-3 rounded border border-light">
-        <span class="fw-bold text-secondary me-2">Referencias:</span>
-        <div class="d-flex align-items-center"><span class="badge bg-success rounded-circle p-2 me-2"></span> Disponible</div>
-        <div class="d-flex align-items-center"><span class="badge bg-danger rounded-circle p-2 me-2"></span> Ocupada</div>
-    </div>
-
-<!-- MAPA DE MESAS  -->
-
-<div class="row g-3 mb-4">
-
-    <asp:Repeater ID="rptMesas" runat="server">
-        <ItemTemplate>
-
-            <div class="col-6 col-md-3">
-                <div class="card shadow-sm text-center p-3">
-
-                    <i class="bi bi-egg-fried text-primary fs-3"></i>
-
-                    <h6 class="fw-bold mt-2">
-                        Mesa <%#: Eval("NumeroMesa") %>
-                    </h6>
-
-                    <p class="text-secondary small">
-                        Capacidad: <%#: Eval("Capacidad") %>
-                    </p>
-
-                    <span class="badge bg-secondary">
-                        <%#: Eval("Estado") %>
-                    </span>
-
-                    <asp:LinkButton
-                        ID="btnSeleccionar" runat="server" Text="Seleccionar" CssClass="btn btn-primary btn-sm mt-2"
-                        CommandArgument = '<%# Eval("ID") %>' CommandName='<%# Eval("NumeroMesa") %>' 
-                        Enabled='<%# Eval("Estado").ToString() == "Libre" %>' OnCommand="btnSeleccionar_Command" />
-
-
-
-                </div>
-            </div>
-
-        </ItemTemplate>
-    </asp:Repeater>
-    </div>
-
-    <div class="row">
-        <div class="col-3">
-             <asp:TextBox CssClass="form-control" ID="numero" runat="server" />
-             <asp:TextBox CssClass="form-control" ID="capacidad" runat="server" />
-             <asp:Button ID="btnAgregarMesa" OnClick="btnAgregarMesa_Click" CssClass="btn btn-primary" Text="Agregar" runat="server" />
+    <div style="display: flex; align-items: center; gap: 20px; background-color: #1e293b; border: 1px solid #334155; padding: 10px 16px; border-radius: 8px; margin-bottom: 20px; font-size: 13px; color: #cbd5e1;">
+        <span style="font-weight: bold; color: #f8fafc;">Referencias:</span>
+        <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="width: 12px; height: 12px; border-radius: 50%; background-color: #22c55e; display: inline-block;"></span>
+            <span>Disponible</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="width: 12px; height: 12px; border-radius: 50%; background-color: #ef4444; display: inline-block;"></span>
+            <span>Ocupada / Reservada</span>
         </div>
     </div>
-    
-    <asp:Panel ID="pnlAsignacion" runat="server"
-     Visible="false" CssClass="card p-4 mt-3">
 
-        <asp:HiddenField ID="hfMesaId" runat="server" />
+    <!-- Mensaje de estado / feedback -->
+    <asp:Label ID="lblMensaje" runat="server"
+        Style="display: block; margin-bottom: 14px; font-weight: bold; font-size: 14px; color: #38bdf8;" />
 
-        <h5>Asignar mesa</h5>
+    <!-- MAPA DE MESAS -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(145px, 155px)); gap: 15px; margin-top: 10px;">
+        <asp:Repeater ID="rptMesas" runat="server">
+            <ItemTemplate>
+                <div style='<%# Eval("Estado").ToString() == "Libre" 
+                    ? "width: 150px; height: 150px; background-color: #1e293b; border: 2px solid #22c55e; border-radius: 10px; padding: 10px; display: flex; flex-direction: column; justify-content: space-between; text-align: center; color: white;" 
+                    : "width: 150px; height: 150px; background-color: #451a1a; border: 2px solid #ef4444; border-radius: 10px; padding: 10px; display: flex; flex-direction: column; justify-content: space-between; text-align: center; color: white;" %>'>
 
-        <asp:Label ID="lblMesaElegida"
-         runat="server" CssClass="d-block mb-3" />
+                    <%-- Número de mesa y capacidad --%>
+                    <div>
+                        <div style="font-weight: bold; font-size: 16px; line-height: 1.2;">Mesa <%# Eval("NumeroMesa") %></div>
+                        <div style="font-size: 12px; color: #cbd5e1;">Cap: <%# Eval("Capacidad") %></div>
+                    </div>
 
-        <label class="form-label">Seleccionar mesero:</label>
+                    <%-- Etiqueta de estado --%>
+                    <div>
+                        <span style='<%# Eval("Estado").ToString() == "Libre" 
+                            ? "background-color: #22c55e; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 12px; font-weight: bold;" 
+                            : "background-color: #ef4444; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 12px; font-weight: bold;" %>'>
+                            <%# Eval("Estado").ToString() == "Libre" ? "Libre" : "Reservada" %>
+                        </span>
+                    </div>
 
-        <asp:DropDownList ID="ddlMeseros"
-        runat="server" CssClass="form-select">
-        </asp:DropDownList>
+                    <%-- Botón abajo --%>
+                    <asp:Button ID="btnSeleccionar" runat="server"
+                        Text='<%# Eval("Estado").ToString() == "Libre" ? "Asignar Mesero" : "Desasignar" %>'
+                        Style='<%# Eval("Estado").ToString() == "Libre" 
+                            ? "width: 100%; background-color: #16a34a; color: white; border: none; border-radius: 5px; padding: 4px; font-size: 12px; font-weight: bold; cursor: pointer;" 
+                            : "width: 100%; background-color: #dc2626; color: white; border: none; border-radius: 5px; padding: 4px; font-size: 12px; font-weight: bold; cursor: pointer;" %>'
+                        CommandName='<%# Eval("Estado").ToString() == "Libre" ? "Asignar" : "Desasignar" %>'
+                        CommandArgument='<%# Eval("Id") %>'
+                        OnCommand="btnSeleccionar_Command" />
+                </div>
+            </ItemTemplate>
+        </asp:Repeater>
+    </div>
 
+    <!-- FORMULARIO COMPACTO PARA AGREGAR NUEVA MESA -->
+    <div style="margin-top: 28px; background-color: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 16px 20px; max-width: 520px;">
+        <h6 style="margin: 0 0 12px 0; color: #f8fafc; font-weight: bold; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">
+            + Agregar Nueva Mesa
+        </h6>
+
+        <div style="display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 130px;">
+                <label style="display: block; font-size: 12px; color: #94a3b8; margin-bottom: 4px;">Número de Mesa</label>
+                <asp:TextBox ID="numero" runat="server" placeholder="Ej: 6"
+                    Style="width: 100%; padding: 8px 10px; border-radius: 6px; border: 1px solid #475569; background-color: #0f172a; color: white; font-size: 14px; box-sizing: border-box;" />
+            </div>
+
+            <div style="flex: 1; min-width: 130px;">
+                <label style="display: block; font-size: 12px; color: #94a3b8; margin-bottom: 4px;">Capacidad (pers.)</label>
+                <asp:TextBox ID="capacidad" runat="server" placeholder="Ej: 4"
+                    Style="width: 100%; padding: 8px 10px; border-radius: 6px; border: 1px solid #475569; background-color: #0f172a; color: white; font-size: 14px; box-sizing: border-box;" />
+            </div>
+
+            <div>
+                <asp:Button ID="btnAgregarMesa" runat="server" Text="Agregar Mesa" OnClick="btnAgregarMesa_Click"
+                    Style="padding: 9px 18px; border-radius: 6px; border: none; background-color: #2563eb; color: white; font-size: 13px; font-weight: bold; cursor: pointer; height: 37px;" />
+            </div>
+        </div>
+
+        <%-- Mensajito directo dentro de la tarjeta --%>
+        <asp:Label ID="lblErrorAgregar" runat="server"
+            Style="display: block; margin-top: 10px; font-size: 13px; font-weight: 600;" />
+    </div>
+
+    <!-- MODAL FLOTANTE DE ASIGNACIÓN -->
+    <asp:Panel ID="pnlAsignacion" runat="server" Visible="false"
+        Style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); display: flex; justify-content: center; align-items: center; z-index: 9999;">
         
-        <asp:Button ID="btnGuardar"
-        runat="server"
-        Text="Confirmar asignación"
-        CssClass="btn btn-success mt-3"
-        OnClick="btnGuardar_Click" />
+        <div style="background-color: #1e293b; border: 1px solid #475569; border-radius: 12px; padding: 24px; width: 100%; max-width: 360px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); color: white;">
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 10px; margin-bottom: 16px;">
+                <h5 style="margin: 0; font-weight: bold; font-size: 18px;">Asignar Mesa</h5>
+                <asp:Button ID="btnCerrarModal" runat="server" Text="✕" OnClick="btnCerrarModal_Click"
+                    Style="background: none; border: none; color: #94a3b8; font-size: 18px; cursor: pointer; padding: 0 4px;" />
+            </div>
 
+            <asp:HiddenField ID="hfMesaId" runat="server" />
 
+            <div style="margin-bottom: 14px; font-size: 14px; color: #38bdf8; font-weight: 600;">
+                <asp:Label ID="lblMesaElegida" runat="server" />
+            </div>
+
+            <div style="margin-bottom: 18px;">
+                <label style="display: block; font-size: 13px; color: #cbd5e1; margin-bottom: 6px;">Seleccionar mesero:</label>
+                <asp:DropDownList ID="ddlMeseros" runat="server"
+                    Style="width: 100%; padding: 8px 10px; border-radius: 6px; border: 1px solid #475569; background-color: #0f172a; color: white; font-size: 14px;">
+                </asp:DropDownList>
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+                <asp:Button ID="btnCancelarModal" runat="server" Text="Cancelar" OnClick="btnCerrarModal_Click"
+                    Style="flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #475569; background-color: transparent; color: #cbd5e1; font-size: 13px; font-weight: 600; cursor: pointer;" />
+                
+                <asp:Button ID="btnGuardar" runat="server" Text="Confirmar" OnClick="btnGuardar_Click"
+                    Style="flex: 1; padding: 8px; border-radius: 6px; border: none; background-color: #16a34a; color: white; font-size: 13px; font-weight: 600; cursor: pointer;" />
+            </div>
+        </div>
     </asp:Panel>
-
-    <asp:Label ID="lblMensaje"
-    runat="server"
-    CssClass="d-block mt-3 fw-bold" />
 
 </asp:Content>
 
 
-  <%-- 
+
+<%-- 
     <div class="vstack gap-4 mb-5 mx-auto" style="max-width: 600px;">
     <div class="vstack gap-4 mb-5 mx-auto" style="max-width: 600px;">
         

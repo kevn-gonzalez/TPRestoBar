@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using TPC_RestoBar_Equipo_X.AccesoDatos;
 using TPC_RestoBar_Equipo_X.Dominio;
@@ -15,11 +14,12 @@ namespace TPC_RestoBar_Equipo_X.DatosNegocio
 
             try
             {
+                // CORREGIDO: p.MesaId = m.Id (antes decía p.Id = m.ID)
                 datos.setearConsulta(@"
                     SELECT p.Id, p.FechaApertura, p.Estado,
-                           m.NumeroMesa, m.Capacidad
+                           m.Id AS IdMesa, m.NumeroMesa, m.Capacidad
                     FROM Pedidos p
-                    INNER JOIN Mesa m ON p.Id = m.ID
+                    INNER JOIN Mesa m ON p.MesaId = m.Id
                     WHERE p.MeseroId = @idMesero
                     AND p.Estado = 'Abierto'
                     ORDER BY m.NumeroMesa");
@@ -30,12 +30,12 @@ namespace TPC_RestoBar_Equipo_X.DatosNegocio
                 while (datos.Lector.Read())
                 {
                     Pedido pedido = new Pedido();
-
-                    pedido.Id = (int)datos.Lector["ID"];
+                    pedido.Id = (int)datos.Lector["Id"];
                     pedido.FechaApertura = (DateTime)datos.Lector["FechaApertura"];
                     pedido.Estado = (string)datos.Lector["Estado"];
 
                     pedido.Mesa = new Mesa();
+                    pedido.Mesa.Id = (int)datos.Lector["IdMesa"];
                     pedido.Mesa.NumeroMesa = (int)datos.Lector["NumeroMesa"];
                     pedido.Mesa.Capacidad = (int)datos.Lector["Capacidad"];
 
@@ -50,23 +50,29 @@ namespace TPC_RestoBar_Equipo_X.DatosNegocio
             }
         }
 
-        public List<Consumicion> listarConsumiciones()
+        // CORREGIDO: Ahora filtra por @PedidoId para no mezclar mesas
+        public List<Consumicion> listarConsumiciones(int idPedido)
         {
             List<Consumicion> lista = new List<Consumicion>();
             AccesoADatos datos = new AccesoADatos();
 
             try
             {
-                datos.setearConsulta(
-                "SELECT ID, Nombre, Tipo, Precio, Cantidad FROM Consumiciones WHERE Cantidad > 0 ORDER BY Nombre");
+                datos.setearConsulta(@"
+                    SELECT Id, InsumoId, PedidoId, Nombre, Tipo, Precio, Cantidad 
+                    FROM Consumiciones 
+                    WHERE PedidoId = @PedidoId AND Cantidad > 0 
+                    ORDER BY Id DESC");
 
+                datos.setearParametro("@PedidoId", idPedido);
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
                 {
                     Consumicion aux = new Consumicion();
-
-                    aux.Id = (int)datos.Lector["ID"];
+                    aux.Id = (int)datos.Lector["Id"];
+                    aux.InsumoId = (int)datos.Lector["InsumoId"];
+                    aux.PedidoId = (int)datos.Lector["PedidoId"];
                     aux.Nombre = (string)datos.Lector["Nombre"];
                     aux.Tipo = (string)datos.Lector["Tipo"];
                     aux.Precio = (decimal)datos.Lector["Precio"];
@@ -89,8 +95,9 @@ namespace TPC_RestoBar_Equipo_X.DatosNegocio
 
             try
             {
-                datos.setearConsulta("INSERT INTO Consumiciones (InsumoId, PedidoId, Nombre, Tipo, Precio, Cantidad) " +
-                                      "VALUES (@InsumoId, @PedidoId, @Nombre, @Tipo, @Precio, @Cantidad)");
+                datos.setearConsulta(@"
+                    INSERT INTO Consumiciones (InsumoId, PedidoId, Nombre, Tipo, Precio, Cantidad)
+                    VALUES (@InsumoId, @PedidoId, @Nombre, @Tipo, @Precio, @Cantidad)");
 
                 datos.setearParametro("@InsumoId", nuevo.InsumoId);
                 datos.setearParametro("@PedidoId", nuevo.PedidoId);
@@ -101,63 +108,11 @@ namespace TPC_RestoBar_Equipo_X.DatosNegocio
 
                 datos.ejecutarAccion();
             }
-            catch (Exception ex)
-            {
-                throw;
-            }
             finally
             {
                 datos.cerrarConexion();
             }
         }
-
-        //public Pedido listarConsumidoPorMesa(int idMesero, int idMesa)
-        //{
-        //    List<Consumicion> lista = new List<Consumicion>();
-        //    Pedido seleccionado = new Pedido();
-
-        //    AccesoADatos datos = new AccesoADatos();
-
-        //    if (seleccionado.Mesero.ID == idMesero && seleccionado.Mesa.ID == idMesa)
-        //    {
-
-        //        try
-        //        {
-        //            datos.setearConsulta(@"
-        //                SELECT p.ID, p.FechaApertura, p.Estado,
-        //                       m.NumeroMesa, m.Capacidad
-        //                FROM Pedidos p
-        //                INNER JOIN Mesa m ON p.ID_Mesa = m.ID
-        //                WHERE p.ID_Mesero = @idMesero
-        //                AND p.Estado = 'Abierto'
-        //                ORDER BY m.NumeroMesa");
-
-        //            datos.setearParametro("@idMesero", idMesero);
-        //            datos.ejecutarLectura();
-
-        //            while (datos.Lector.Read())
-        //            {
-        //                Pedido pedido = new Pedido();
-
-        //                pedido.ID = (int)datos.Lector["ID"];
-        //                pedido.FechaApertura = (DateTime)datos.Lector["FechaApertura"];
-        //                pedido.Estado = (string)datos.Lector["Estado"];
-
-        //                pedido.Mesa = new Mesa();
-        //                pedido.Mesa.NumeroMesa = (int)datos.Lector["NumeroMesa"];
-        //                pedido.Mesa.Capacidad = (int)datos.Lector["Capacidad"];
-
-        //                lista.Add(pedido);
-        //            }
-
-        //            return lista;
-        //        }
-        //    }
-        //    finally
-        //    {
-        //        datos.cerrarConexion();
-        //    }
-        //}
-
     }
 }
+

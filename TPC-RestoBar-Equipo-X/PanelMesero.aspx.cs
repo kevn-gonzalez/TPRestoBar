@@ -122,9 +122,13 @@ namespace TPC_RestoBar_Equipo_X
 
         private void cargarGrillaConsumiciones()
         {
-            PanelMeseroNegocio negocio = new PanelMeseroNegocio();
-            gvConsumiciones.DataSource = negocio.listarConsumiciones();
-            gvConsumiciones.DataBind();
+            int idPedido;
+            if (int.TryParse(hfPedidoId.Value, out idPedido))
+            {
+                PanelMeseroNegocio negocio = new PanelMeseroNegocio();
+                gvConsumiciones.DataSource = negocio.listarConsumiciones(idPedido);
+                gvConsumiciones.DataBind();
+            }
         }
 
         protected void btnElegirConsumicion_Command(object sender, CommandEventArgs e)
@@ -160,29 +164,40 @@ namespace TPC_RestoBar_Equipo_X
         {
             try
             {
-                Consumicion nuevo = new Consumicion();
+                int cantidadPedida = int.Parse(txtCantidad.Text);
+                if (cantidadPedida <= 0) return;
+
                 InsumosNegocio negocioInsumo = new InsumosNegocio();
-                nuevo.InsumoId = int.Parse(hfInsumoId.Value);
-                Insumo insumo = negocioInsumo.buscarPorId(nuevo.InsumoId);
-                PanelMeseroNegocio negocio = new PanelMeseroNegocio();
+                int idInsumo = int.Parse(hfInsumoId.Value);
+                Insumo insumo = negocioInsumo.buscarPorId(idInsumo);
+
+                if (insumo == null || insumo.StockActual < cantidadPedida)
+                {
+                    lblMensaje.Text = "No hay stock suficiente para agregar esa cantidad.";
+                    return;
+                }
+
+                Consumicion nuevo = new Consumicion();
+                nuevo.InsumoId = idInsumo;
                 nuevo.PedidoId = int.Parse(hfPedidoId.Value);
                 nuevo.Nombre = insumo.Nombre;
                 nuevo.Tipo = insumo.Tipo;
-                nuevo.Cantidad = int.Parse(txtCantidad.Text);
+                nuevo.Cantidad = cantidadPedida;
                 nuevo.Precio = insumo.PrecioVenta;
+
+                PanelMeseroNegocio negocio = new PanelMeseroNegocio();
                 negocio.guardar(nuevo);
 
-                insumo.StockActual -= insumo.StockActual;
-                negocioInsumo.guardar(insumo);
+                insumo.StockActual -= cantidadPedida;
+                negocioInsumo.modificar(insumo);
 
                 cargarGrillaConsumiciones();
                 cargarGrillaInsumos();
-
+                pnlAgregar.Visible = false;
             }
             catch (Exception)
             {
-
-                throw;
+                lblMensaje.Text = "Error al agregar la consumición.";
             }
         }
     }
