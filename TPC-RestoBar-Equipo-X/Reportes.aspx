@@ -35,7 +35,7 @@
                         <h2 class="fw-bold text-white">
                             <asp:Label ID="lblPedidos" runat="server" Text="0" />
                         </h2>
-                        <small class="text-white-50">Pedidos con estado Pagado</small>
+                        
                     </div>
                 </div>
             </div>

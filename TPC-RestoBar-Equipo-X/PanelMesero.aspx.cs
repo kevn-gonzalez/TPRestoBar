@@ -22,6 +22,15 @@ namespace TPC_RestoBar_Equipo_X
                 ddlMeseros.DataBind();
 
                 ddlMeseros.Items.Insert(0, new ListItem("Seleccioná un mesero", ""));
+                // Para verificar si el usuario logueado es un mesero y limitar la vista a sus pedidos
+                if (Seguridad.EstaLogueado() && !Seguridad.EsAdmin())
+                {
+                    Usuario logueado = (Usuario)Session["usuario"];
+                    ddlMeseros.SelectedValue = logueado.ID.ToString();
+                    // No puede ver mesas de otros meseros
+                    ddlMeseros.Enabled = false; 
+                    cargarPedidosDelMesero();
+                }
             }
         }
 
