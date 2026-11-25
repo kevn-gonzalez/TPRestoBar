@@ -1,422 +1,151 @@
-﻿
-<%@ Page Title="Mis Mesas" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="PanelMesero.aspx.cs" Inherits="TPC_RestoBar_Equipo_X.PanelMesero" %>
+﻿<%@ Page Title="Mis Mesas" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="PanelMesero.aspx.cs" Inherits="TPC_RestoBar_Equipo_X.PanelMesero" MaintainScrollPositionOnPostback="true" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-    <div class="resto-panel">
+    <asp:ScriptManager ID="ScriptManager1" runat="server" />
+    <asp:UpdatePanel ID="upPanelMesero" runat="server">
+        <ContentTemplate>
+            <div class="resto-panel">
 
-        
-        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
-            <div>
-                <h2 class="fw-bold mb-1">Mis Mesas Asignadas</h2>
-                <p class="text-muted mb-0">
-                    Consultá y gestioná los pedidos de cada mesero.
-                </p>
-            </div>
-
-            <span class="etiqueta-panel">Gestión de pedidos</span>
-        </div>
-
-
-        <div class="selector-panel mb-4">
-            <label class="form-label fw-bold">Seleccionar mesero</label>
-
-            <asp:DropDownList
-                ID="ddlMeseros"
-                runat="server"
-                CssClass="form-select"
-                AutoPostBack="true"
-                OnSelectedIndexChanged="ddlMeseros_SelectedIndexChanged">
-            </asp:DropDownList>
-        </div>
-
-        <asp:Label ID="lblMensaje"
-            runat="server"
-            CssClass="d-block mb-3 text-danger" />
-
-        <asp:Label ID="lblSinPedidos"
-            runat="server"
-            Visible="false"
-            Text="Este mesero no tiene pedidos abiertos."
-            CssClass="d-block mb-3 text-muted" />
-
-        <div class="row g-4">
-
-
-    <div class="col-12 col-lg-7">
-
-        <h4 class="fw-bold mb-3">Pedidos abiertos</h4>
-
-        <div class="row g-3">
-
-            <asp:Repeater ID="rptPedidos" runat="server">
-                <ItemTemplate>
-
-                    <div class="col-12">
-
-                        <div class="mesa-card h-100">
-
-                            <div class="d-flex justify-content-between align-items-start mb-3">
-                                <div>
-                                    <h5 class="fw-bold mb-1">
-                                        Mesa <%#: Eval("Mesa.NumeroMesa") %>
-                                    </h5>
-
-                                    <p class="mb-1">
-                                        Pedido #<%#: Eval("ID") %></p>
-
-                                    <p class="text-muted small mb-1">
-                                        Capacidad: <%#: Eval("Mesa.Capacidad") %> personas
-                                    </p>
-
-                                    <p class="text-muted small mb-0">
-                                        Apertura:
-                                        <%#: Eval("FechaApertura", "{0:dd/MM/yyyy HH:mm}") %>
-                                    </p>
-                                </div>
-
-                                <span class="estado-abierto">Abierto</span>
-                            </div>
-
-                            <div class="text-end mt-3">
-                                <asp:LinkButton
-                                    ID="btnGestionar"
-                                    runat="server"
-                                    Text="Gestionar pedido"
-                                    CssClass="btn-gestionar"
-                                    CommandArgument='<%# Eval("ID") %>'
-                                    OnCommand="btnGestionar_Command" />
-                            </div>
-
-                        </div>
-
+                <%-- CABECERA Y SELECTOR DE MESERO --%>
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+                    <div>
+                        <h2 class="fw-bold mb-1">Mis Mesas Asignadas</h2>
+                        <p class="text-muted mb-0">Consultá y gestioná los pedidos de cada mesero.</p>
                     </div>
-
-                </ItemTemplate>
-            </asp:Repeater>
-
-        </div>
-    </div>
-
-
-    <div class="col-12 col-lg-5">
-
-        <div id="zonaGestion">
-
-            <asp:Panel ID="Panel1"
-                runat="server"
-                Visible="false"
-                CssClass="pedido-detalle">
-
-                <asp:HiddenField ID="HiddenField1" runat="server" />
-
-                <div class="mb-4">
-                    <h3 class="fw-bold mb-2">Gestionar pedido</h3>
-
-                    <asp:Label ID="Label1"
-                        runat="server"
-                        CssClass="text-muted" />
-                </div>
-
-                
-                
-
-                <asp:Panel ID="Panel2"
-                    runat="server"
-                    Visible="false"
-                    CssClass="producto-seleccionado mt-4">
-
-                    <asp:HiddenField ID="HiddenField2"
-                        runat="server" />
-
-                    <h5 class="fw-bold mb-3">Producto seleccionado</h5>
-
-                    <asp:Label ID="Label2"
-                        runat="server"
-                        CssClass="d-block mb-3 fw-bold" />
-
-                    <label class="form-label">Cantidad:</label>
-
-                    <asp:TextBox ID="TextBox1"
-                        runat="server"
-                        TextMode="Number"
-                        Text="1"
-                        min="1"
-                        CssClass="form-control"
-                        Width="120px" />
-
-                    <p class="text-muted small mt-3 mb-0">
-                        El guardado de productos en el pedido se implementará en el siguiente paso.
-                    </p>
-
-                </asp:Panel>
-
-            </asp:Panel>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-        <div id="zonaGestion2">
-
-            <asp:Panel ID="pnlPedido"
-                runat="server"
-                Visible="false"
-                CssClass="pedido-detalle mt-4">
-
-                <asp:HiddenField ID="hfPedidoId" runat="server" />
-
-                <div class="mb-4">
-                    <h3 class="fw-bold mb-2">Gestionar pedido</h3>
-
-                    <asp:Label ID="lblPedidoElegido"
-                        runat="server"
-                        CssClass="text-muted" />
-                </div>
-
-                <h5 class="fw-bold mb-3">Productos disponibles</h5>
-
-<div class="table-responsive">
-
-    <asp:GridView ID="dgvProductosDisponibles"
-        runat="server"
-        AutoGenerateColumns="false"
-        GridLines="None"
-        CssClass="table table-hover align-middle">
-
-        <Columns>
-
-            <asp:BoundField DataField="Nombre"
-                HeaderText="Producto" />
-
-            <asp:BoundField DataField="Tipo"
-                HeaderText="Tipo" />
-
-            <asp:BoundField DataField="PrecioVenta"
-                HeaderText="Precio"
-                DataFormatString="{0:N2}" />
-
-            <asp:BoundField DataField="StockActual"
-                HeaderText="Stock disponible" />
-
-            <asp:TemplateField HeaderText="Acción">
-                <ItemTemplate>
-                    <asp:LinkButton
-                        ID="btnElegirConsumicion"
-                        runat="server"
-                        Text="Seleccionar"
-                        CssClass="btn btn-primary btn-sm"
-                        CommandArgument='<%# Eval("ID") %>'
-                        CommandName='<%# Eval("Nombre") %>'
-                        OnCommand="btnElegirConsumicion_Command" />
-                </ItemTemplate>
-            </asp:TemplateField>
-
-        </Columns>
-
-    </asp:GridView>
-
-</div>
-
-<asp:Panel ID="pnlAgregar"
-    runat="server"
-    Visible="false"
-    CssClass="producto-seleccionado mt-3">
-
-    <asp:HiddenField ID="hfInsumoId"
-        runat="server" />
-
-    <h5 class="fw-bold mb-3">Producto seleccionado</h5>
-
-    <asp:Label ID="lblConsumicionElegida"
-        runat="server"
-        CssClass="d-block mb-3 fw-bold" />
-
-    <label class="form-label">Cantidad:</label>
-
-    <asp:TextBox ID="txtCantidad"
-        runat="server"
-        TextMode="Number"
-        Text="1"
-        min="1"
-        CssClass="form-control mb-3"
-        Width="120px" />
-
-    <asp:Button OnClick="btnAgregarConsumicion_Click"
-        ID="btnAgregarConsumicion"
-        runat="server"
-        Text="Agregar consumición"
-        CssClass="btn btn-outline-danger btn-sm fw-semibold" />
-
-</asp:Panel>
-
-<hr class="my-4 border-2 opacity-50" />
-
-<h5 class="fw-bold mb-3">
-    <asp:Label ID="lblTituloPedidosMesa"
-        runat="server"
-        Text="Pedidos de la mesa" />
-</h5>
-
-<div class="table-responsive">
-
-    <asp:GridView ID="gvConsumiciones"
-        runat="server"
-        AutoGenerateColumns="false"
-        GridLines="None"
-        CssClass="table table-sm table-striped align-middle"
-        EmptyDataText="Todavía no se agregó ninguna consumición a este pedido.">
-
-        <Columns>
-
-            <asp:BoundField DataField="Nombre"
-                HeaderText="Producto" />
-
-            <asp:BoundField DataField="Tipo"
-                HeaderText="Tipo" />
-
-            <asp:BoundField DataField="Precio"
-                HeaderText="Precio"
-                DataFormatString="{0:N2}" />
-
-            <asp:BoundField DataField="Cantidad"
-                HeaderText="Cantidad" />
-
-        </Columns>
-
-    </asp:GridView>
-
-</div>
-
-                    <div class="mt-4 pt-3 border-top">
-
-                        <asp:Label
-                            ID="lblTotalPedido"
-                            runat="server"
-                            Text="Total: $0,00"
-                            CssClass="d-block fs-4 fw-bold mb-3" />
-
-                        <button type="button"
-                            class="btn btn-success w-100"
-                            data-bs-toggle="dialog"
-                            data-bs-target="#dialogConfirmarCobro">
-                            Confirmar cobro y liberar mesa
-                        </button>
-
-                    </div>
-
-                    <dialog class="dialog dialog-cobro"
-                        id="dialogConfirmarCobro"
-                        data-bs-theme="dark"
-                        aria-labelledby="tituloDialogCobro">
-
-                        <div class="dialog-header">
-
-                            <h5 class="dialog-title fw-bold"
-                                id="tituloDialogCobro">
-                                Confirmar cobro
-                            </h5>
-
-                            <button type="button"
-                                class="btn-close"
-                                data-bs-dismiss="dialog"
-                                aria-label="Cerrar">
-                            </button>
-
-                        </div>
-
-                        <div class="dialog-body text-center">
-
-                            <div class="icono-cobro mb-3">
-                                ✓
-                            </div>
-
-                            <h5 class="fw-bold">
-                                ¿Finalizar este pedido?
-                            </h5>
-
-                            <p class="text-secondary">
-                                El pedido quedará marcado como pagado
-                                y la mesa volverá a estar libre.
-                            </p>
-
-                        </div>
-
-                        <div class="dialog-footer">
-
-                            <button type="button"
-                                class="btn btn-outline-secondary"
-                                data-bs-dismiss="dialog">
-                                Cancelar
-                            </button>
-
-                            <asp:Button
-                                ID="btnCerrarPedido"
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="selector-panel m-0">
+                            <asp:DropDownList
+                                ID="ddlMeseros"
                                 runat="server"
-                                Text="Sí, confirmar cobro"
-                                CssClass="btn btn-success"
-                                OnClick="btnCerrarPedido_Click" />
+                                CssClass="form-select"
+                                AutoPostBack="true"
+                                OnSelectedIndexChanged="ddlMeseros_SelectedIndexChanged">
+                            </asp:DropDownList>
+                        </div>
+                        <span class="etiqueta-panel">Gestión de pedidos</span>
+                    </div>
+                </div>
+                <asp:Label ID="lblMensaje" runat="server" CssClass="d-block mb-3 text-danger" />
+                <asp:Label ID="lblSinPedidos" runat="server" Visible="false" Text="Este mesero no tiene pedidos abiertos." CssClass="d-block mb-3 text-muted" />
+
+                <%-- INICIO DE PANTALLA DIVIDIDA --%>
+                <div class="row g-4 align-items-start">
+
+                    <%-- COLUMNA IZQUIERDA (5 cols): GRILLA DE MESAS --%>
+                    <div class="col-12 col-lg-5">
+                        <h4 class="fw-bold mb-3">Pedidos abiertos</h4>
+                        <div class="row g-3">
+                            <asp:Repeater ID="rptPedidos" runat="server" OnItemDataBound="rptPedidos_ItemDataBound">
+
+
+                                <ItemTemplate>
+                                    <div class="col-12">
+                                        <div class="mesa-card p-4 mb-3">
+
+                                            <%-- CABECERA DE LA TARJETA (Siempre visible) --%>
+                                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                                <div>
+                                                    <h5 class="fw-bold mb-1">Mesa <%#: Eval("Mesa.NumeroMesa") %> <span class="text-info ms-2">Pedido #<%#: Eval("ID") %></span></h5>
+                                                    <p class="text-muted small mb-0">
+                                                        Capacidad: <%#: Eval("Mesa.Capacidad") %> pers. | Apertura: <%#: Eval("FechaApertura", "{0:HH:mm}") %> hs
+                                                    </p>
+                                                </div>
+
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <span class="estado-abierto">Abierto</span>
+                                                    <asp:LinkButton
+                                                        ID="btnGestionar"
+                                                        runat="server"
+                                                        Text="Gestionar pedido"
+                                                        CssClass="btn btn-primary btn-sm fw-semibold"
+                                                        CommandArgument='<%# Eval("ID") %>'
+                                                        OnCommand="btnGestionar_Command" />
+                                                </div>
+                                            </div>
+
+                                            <%-- PANEL DESPLEGABLE DENTRO DE LA MISMA TARJETA --%>
+                                            <asp:Panel ID="pnlDetalleMesa" runat="server" Visible="false" CssClass="mt-4 pt-3 border-top border-secondary border-opacity-50">
+
+                                                <%-- BARRA DE CARGA DIRECTA (1 solo paso, sin Repeaters anidados) --%>
+                                                <div class="p-3 mb-4 rounded border border-info" style="background-color: rgba(13, 202, 240, 0.08);">
+                                                    <div class="row g-2 align-items-end">
+                                                        <div class="col-12 col-md-6">
+                                                            <label class="form-label small fw-bold mb-1">Seleccionar producto:</label>
+                                                            <asp:DropDownList ID="ddlProductosItem" runat="server" CssClass="form-select form-select-sm">
+                                                            </asp:DropDownList>
+                                                        </div>
+
+                                                        <div class="col-6 col-md-3">
+                                                            <label class="form-label small fw-bold mb-1">Cantidad:</label>
+                                                            <asp:TextBox ID="txtCantidadItem" runat="server" TextMode="Number" Text="1" min="1" CssClass="form-control form-control-sm" />
+                                                        </div>
+
+                                                        <div class="col-6 col-md-3">
+                                                            <asp:Button ID="btnAgregarItem" runat="server" Text="+ Agregar"
+                                                                CssClass="btn btn-success btn-sm w-100 fw-semibold"
+                                                                CommandArgument='<%# Eval("Id") %>'
+                                                                OnClick="btnAgregarItem_Click" />
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <%-- Grilla de consumiciones cargadas en esta mesa --%>
+                                                <div class="row g-3">
+                                                    <div class="col-12">
+
+                                                        <div class="col-12 col-lg-6">
+                                                            <h6 class="fw-bold small text-uppercase text-muted">Consumiciones de esta mesa</h6>
+                                                            <div class="table-responsive" style="max-height: 230px; overflow-y: auto;">
+                                                                <asp:GridView ID="gvConsumicionesItem" runat="server" AutoGenerateColumns="false" GridLines="None" CssClass="table table-sm table-striped align-middle" EmptyDataText="Sin consumiciones aún.">
+                                                                    <Columns>
+                                                                        <asp:BoundField DataField="Nombre" HeaderText="Producto" />
+                                                                        <asp:BoundField DataField="Cantidad" HeaderText="Cant." />
+                                                                        <asp:BoundField DataField="Precio" HeaderText="Precio" DataFormatString="${0:N2}" />
+                                                                    </Columns>
+                                                                </asp:GridView>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <%-- Pie de la tarjeta desplegada: Total y Cobrar --%>
+                                                    <div class="mt-3 pt-3 border-top border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+                                                        <asp:Label ID="lblTotalItem" runat="server" Text="Total: $0,00" CssClass="fs-5 fw-bold text-success mb-0" />
+                                                        <asp:Button ID="btnCobrarMesa" runat="server"
+                                                            Text="Confirmar cobro y liberar mesa"
+                                                            CssClass="btn btn-primary btn-sm fw-semibold"
+                                                            CommandArgument='<%# Eval("Id") %>'
+                                                            OnClientClick="return confirm('¿Confirmar el cobro de este pedido y liberar la mesa?');"
+                                                            OnClick="btnCobrarMesa_Click" />
+
+                                                    </div>
+                                            </asp:Panel>
+
+                                        </div>
+                                    </div>
+                                </ItemTemplate>
+                            </asp:Repeater>
 
                         </div>
+                    </div>
 
-                    </dialog>
+                </div>
+                <%-- Cierre row g-3 --%>
+            </div>
+            <%-- Cierre columna --%>
+                </div> <%-- Cierre row g-4 --%>
 
-            </asp:Panel>
+            <%-- CAMPOS OCULTOS GLOBALES --%>
+            <asp:HiddenField ID="hfPedidoId" runat="server" />
+            <asp:HiddenField ID="hfInsumoId" runat="server" />
+            <asp:HiddenField ID="hfInsumoNombre" runat="server" />
 
-        </div>
+            <%-- DIALOG DE CONFIRMACIÓN DE COBRO --%>
 
-    </div>
+
+            </div> <%-- Cierre resto-panel --%>
+        </ContentTemplate>
+    </asp:UpdatePanel>
 
 </asp:Content>
-
-
-<%--<%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="PanelMesero.aspx.cs" Inherits="TPC_RestoBar_Equipo_X.PanelMesero" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-        <div class="container-fluid">
-        <!-- Encabezado -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h2 class="fw-bold text-dark mb-1">Mis Mesas Asignadas</h2>
-                <p class="text-muted">Gestioná los pedidos y el estado de tus mesas en tiempo real.</p>
-            </div>
-            <span class="badge bg-primary fs-sm px-3 py-2">Mesero Activo</span>
-        </div>
-
-        <!-- Tarjetas de Mesas (Vista de Cuadrícula) -->
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mb-5">
-            
-            <!-- Ejemplo de Mesa Libre -->
-            <div class="col">
-                <div class="card h-100 border-start border-4 border-success shadow-sm">
-                    <div class="card-body d-flex flex-column justify-content-between p-3">
-                        <div class="d-flex justify-content-between align-items-start mb-2">
-                            <h4 class="fw-bold text-dark m-0">Mesa 01</h4>
-                            <span class="badge bg-subtle-success text-success px-2 py-1">Libre</span>
-                        </div>
-                        <p class="text-muted small mb-3"><i class="bi bi-people me-1"></i> Capacidad: 4 personas</p>
-                        <asp:Button ID="btnAbrirPedido1" runat="server" Text="Abrir Pedido" CssClass="btn btn-success w-100 btn-sm fw-semibold" />
-                    </div>
-                </div>
-            </div>
-
-            <!-- Ejemplo de Mesa Ocupada -->
-            <div class="col">
-                <div class="card h-100 border-start border-4 border-danger shadow-sm">
-                    <div class="card-body d-flex flex-column justify-content-between p-3">
-                        <div class="d-flex justify-content-between align-items-start mb-2">
-                            <h4 class="fw-bold text-dark m-0">Mesa 02</h4>
-                            <span class="badge bg-subtle-danger text-danger px-2 py-1">Ocupada</span>
-                        </div>
-                        <p class="text-muted small mb-1"><i class="bi bi-clock me-1"></i> Abierta hace: 45 min</p>
-                        <p class="text-dark fw-bold small mb-3">Total: $0.00</p>
-                        <asp:Button ID="btnVerPedido2" runat="server" Text="Gestionar Pedido" CssClass="btn btn-outline-danger w-100 btn-sm fw-semibold" />
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</asp:Content>--%>
