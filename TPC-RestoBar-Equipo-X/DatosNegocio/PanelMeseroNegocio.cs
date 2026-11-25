@@ -62,7 +62,7 @@ namespace TPC_RestoBar_Equipo_X.DatosNegocio
                     SELECT Id, InsumoId, PedidoId, Nombre, Tipo, Precio, Cantidad 
                     FROM Consumiciones 
                     WHERE PedidoId = @PedidoId AND Cantidad > 0 
-                    ORDER BY Id DESC");
+                    ORDER BY Id");
 
                 datos.setearParametro("@PedidoId", idPedido);
                 datos.ejecutarLectura();
@@ -201,33 +201,7 @@ namespace TPC_RestoBar_Equipo_X.DatosNegocio
             }
         }
 
-        public int obtenerNumeroMesa(int idPedido)
-        {
-            AccesoADatos datos = new AccesoADatos();
-
-            try
-            {
-                datos.setearConsulta(@"
-            SELECT m.NumeroMesa
-            FROM Pedidos p
-            INNER JOIN Mesa m ON p.MesaId = m.Id
-            WHERE p.Id = @idPedido");
-
-                datos.setearParametro("@idPedido", idPedido);
-                datos.ejecutarLectura();
-
-                if (datos.Lector.Read())
-                {
-                    return Convert.ToInt32(datos.Lector["NumeroMesa"]);
-                }
-
-                return 0;
-            }
-            finally
-            {
-                datos.cerrarConexion();
-            }
-        }
+        
 
 
     }
